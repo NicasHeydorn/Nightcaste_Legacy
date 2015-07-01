@@ -1,0 +1,9 @@
+('/home/nicas/dev/nightcaste/build/nightcaste/nightcaste',
+ True,
+ False,
+ None,
+ None,
+ [],
+ None,
+ False,
+ 1434123017)

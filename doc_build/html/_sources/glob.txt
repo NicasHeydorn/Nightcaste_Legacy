@@ -1,0 +1,62 @@
+import libtcodpy as libtcod
+
+""" Global Module for global variables
+
+	Constants for Rendering and Map Creation
+
+	gvar.game: Game instance, consisting of all information that will be saved into the savegame
+		#player
+		#map
+		#game messages
+		#dungeon_level
+		#game_state
+		#objects
+		#ticks
+
+	An Admin() Object for Debugging purposes
+"""
+
+SCREEN_WIDTH = 80
+SCREEN_HEIGHT = 53
+MAP_WIDTH = 80
+MAP_HEIGHT = 44
+
+BAR_WIDTH = 20
+PANEL_HEIGHT = 10
+PANEL_Y = SCREEN_HEIGHT - PANEL_HEIGHT
+MSG_X = BAR_WIDTH + 2
+MSG_WIDTH = SCREEN_WIDTH - BAR_WIDTH - 2
+MSG_HEIGHT = PANEL_HEIGHT - 1
+
+
+
+class Game:
+	#a game instance
+	def __init__(self):
+		global playermaxhl
+		from mechanics import player_death
+		from components import Object,Fighter
+		from utils import PriorityQueue
+		self.player = Object(0, 0, '@', color=libtcod.white, name='player', blocks=True, inventory=[])
+		compFighter = Fighter(hl=[1,2,2,1], essence=2, strength=1, dexterity=1, stamina=1, death_function=player_death)
+		playermaxhl = compFighter.hl
+		self.player.fighter = compFighter
+		self.player.fighter.owner = self.player
+
+		self.ticks = PriorityQueue()
+		self.map=[]
+		self.game_msgs = []
+		self.last_die_rolls = []
+		self.dungeon_level = 1
+		self.game_state = 'playing'
+		self.objects=[]
+		self.rooms=[]
+
+
+
+class Admin:
+	#Admin Settings
+	def __init__(self):
+		self.light_all = False
+
+admin = Admin()

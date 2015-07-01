@@ -1,0 +1,859 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Nightcaste 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Nightcaste 0.3 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">Nightcaste 0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p>import libtcodpy as libtcod
+import glob
+import math
+from utils import calcBonuses</p>
+<dl class="docutils">
+<dt>class Object:</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Generic Object, which can have multiple components and become the player, a mob, stairs, loot, etc. &#8220;&#8221;&#8220;</p>
+<dl class="last docutils">
+<dt>def __init__(self, x, y, char, name=&#8217;&#8216;, color=libtcod.white, blocks=False, exp=0, always_visible=False, fighter=None, ai=None, item=None, equipment=None, inventory=[]):</dt>
+<dd><p class="first">self.x = x
+self.y = y
+self.char = char
+self.color = color
+self.name = name
+self.blocks = blocks # boolean - if others can pass through
+self.always_visible = always_visible # boolean - if this object should be drawn regardless of FOV, when explored
+self.exp = exp # int - exp given to the player once explored, killed, etc.
+self.inventory = inventory # list - inventory of the player, the mob, a corpse or a treasure chest, etc.</p>
+<p># Fighter Component
+# Has all values and methods used for combat
+self.fighter = fighter
+if self.fighter:</p>
+<blockquote>
+<div>self.fighter.owner = self</div></blockquote>
+<p># MobAI Component
+# Handles NPC actions
+self.ai = ai
+if self.ai:</p>
+<blockquote>
+<div>self.ai.owner = self</div></blockquote>
+<p># Item Component
+# Handles Pick up and Use Functions of Items
+# Note that Equipment stats and others are in the Equipment Component, not here
+self.item = item
+if self.item:</p>
+<blockquote>
+<div>self.item.owner = self</div></blockquote>
+<p># Equipment Component
+# An Equipment item, which can have Weapon, Armor or Ranged Components
+self.equipment = equipment
+if self.equipment:</p>
+<blockquote class="last">
+<div>self.item = Item()
+self.item.owner = self
+self.equipment.owner = self</div></blockquote>
+</dd>
+<dt>def move(self, dx, dy):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221;     function:: move(self, dx, dy)</dt>
+<dd><p class="first">Move current position relatively by the given amount</p>
+<p class="last">dx &#8211; int | relative horizontal distance
+dy &#8211; int | relative vertical distance</p>
+</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from utils import is_blocked</p>
+<dl class="last docutils">
+<dt>if not is_blocked(self.x + dx, self.y + dy):</dt>
+<dd><p class="first">self.x += dx
+self.y += dy
+if gvar.game.map[self.x][self.y].step_function is not None:</p>
+<blockquote class="last">
+<div>gvar.game.map[self.x][self.y].step_function(self)</div></blockquote>
+</dd>
+</dl>
+</dd>
+<dt>def move_to(self, spot):</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Move current position absolutely to the given spot</p>
+<blockquote>
+<div>spot &#8211; tuple | absolute x and y positions</div></blockquote>
+<p>&#8220;&#8221;&#8221;
+from utils import is_blocked, is_player</p>
+<dl class="last docutils">
+<dt>if not is_blocked(spot[0], spot[1]):</dt>
+<dd>self.x = spot[0]
+self.y = spot[1]</dd>
+</dl>
+</dd>
+<dt>def jump(self, direction):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Jump to the given direction</dt>
+<dd><p class="first">checking for blocked spots and
+stopping if block is found</p>
+<p class="last">direction &#8211; tuple | relative x and y directions</p>
+</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from utils import d10, is_blocked, is_player</p>
+<p># Roll DEX + Athletics
+roll = d10(self.fighter.dexterity + self.fighter.skills[&#8220;Athletics&#8221;], &#8216;Jump&#8217;, player=is_player(self))</p>
+<p># Normalize directions
+for d in directions:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>if d &gt; 0:</dt>
+<dd>d = 1</dd>
+<dt>elif d &lt; 0:</dt>
+<dd>d = -1</dd>
+</dl>
+</div></blockquote>
+<p>#Check for blocking Objects/Tiles
+max_distance = 0
+if roll[0] != &#8216;botch&#8217;:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>for d in range(1, roll[0]):</dt>
+<dd><p class="first">max_distance = d
+if is_blocked(self.x + direction[0] * (d+1), self.y + direction[1] * (d+1)):</p>
+<blockquote class="last">
+<div>break</div></blockquote>
+</dd>
+</dl>
+<p>self.move_to((self.x + direction[0]*max_distance, self.y + direction[1]*max_distance))</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>else:</dt>
+<dd>#TODO Botch Behaviour
+print &#8220;botch&#8221;</dd>
+</dl>
+<p class="last">return self.fighter.movement_speed()</p>
+</dd>
+<dt>def distance_to(self, other):</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Returns the distance to another object &#8220;&#8221;&#8221;
+from utils import get_distance</p>
+<p class="last">return get_distance((self.x, self.y), (other.x, other.y))</p>
+</dd>
+<dt>def send_to_back(self):</dt>
+<dd>&#8220;&#8221;&#8221; Make this object be drawn first, so all others appear above it if they&#8217;re in the same tile &#8220;&#8221;&#8221;
+gvar.game.objects.remove(self)
+gvar.game.objects.insert(0, self)</dd>
+<dt>def send_to_front(self):</dt>
+<dd>&#8220;&#8221;&#8221; Make this object be drawn last, so it appears above everything else on its tile &#8220;&#8221;&#8221;
+gvar.game.objects.remove(self)
+gvar.game.objects.append(self)</dd>
+<dt>def draw(self):</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Draw this object onto the Map, if it&#8217;s in FOV or always_visible &#8220;&#8221;&#8221;
+from utils import fov_distance_coef</p>
+<dl class="last docutils">
+<dt>if (libtcod.map_is_in_fov(gvar.fov_map, self.x, self.y)) or (self.always_visible and gvar.game.map[self.x][self.y].explored) or gvar.admin.light_all:</dt>
+<dd>libtcod.console_put_char_ex(gvar.con, self.x, self.y, self.char, self.color * fov_distance_coef((self.x, self.y)), libtcod.BKGND_SET)</dd>
+</dl>
+</dd>
+<dt>def clear(self):</dt>
+<dd>&#8220;&#8221;&#8221; Clear this object from the Map, so it won&#8217;t be visible &#8220;&#8221;&#8221;
+libtcod.console_put_char(gvar.con, self.x, self.y, &#8216; &#8216;, libtcod.BKGND_NONE)</dd>
+</dl>
+</dd>
+<dt>class Fighter:</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Combat related Stats and Methods &#8220;&#8221;&#8221;
+def __init__(self, hl=[0,0,0,1], essence=0, strength=1, dexterity=1, stamina=1, perception=1, intelligence=1, wits=1, exp=0, skills={}, death_function=None, bonus={}):</p>
+<blockquote>
+<div><p>self.death_function = death_function
+self.max_hl = hl
+self.hl = list(hl)
+self.essence = essence
+self.skills = skills
+self.base_strength = strength
+self.base_dexterity = dexterity
+self.base_stamina = stamina
+self.base_perception = perception
+self.base_intelligence = intelligence
+self.base_wits = wits
+self.bonus = bonus
+if len(self.skills) != 25:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>for skill in [&#8216;Archery&#8217;,</dt>
+<dd><blockquote class="first">
+<div>&#8216;Martial-Arts&#8217;,
+&#8216;Melee&#8217;,
+&#8216;Thrown&#8217;,
+&#8216;War&#8217;,
+&#8216;Athletics&#8217;,
+&#8216;Awareness&#8217;,
+&#8216;Dodge&#8217;,
+&#8216;Larceny&#8217;,
+&#8216;Stealth&#8217;,
+&#8216;Integrity&#8217;,
+&#8216;Performance&#8217;,
+&#8216;Presence&#8217;,
+&#8216;Resistance&#8217;,
+&#8216;Survival&#8217;,
+&#8216;Bureaucracy&#8217;,
+&#8216;Linguistics&#8217;,
+&#8216;Ride&#8217;,
+&#8216;Sail&#8217;,
+&#8216;Socialize&#8217;,
+&#8216;Craft&#8217;,
+&#8216;Investigation&#8217;,
+&#8216;Lore&#8217;,
+&#8216;Medicine&#8217;,
+&#8216;Occult&#8217;]:</div></blockquote>
+<dl class="last docutils">
+<dt>if skill not in self.skills:</dt>
+<dd>self.skills[skill] = 0</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+<p>&#64;property
+def strength(self):</p>
+<blockquote>
+<div>return (self.base_strength + calcBonuses(&#8216;strength&#8217;, self))</div></blockquote>
+<p>&#64;property
+def stamina(self):</p>
+<blockquote>
+<div>return self.base_stamina + calcBonuses(&#8216;stamina&#8217;, self)</div></blockquote>
+<p>&#64;property
+def dexterity(self):</p>
+<blockquote>
+<div>return self.base_dexterity + calcBonuses(&#8216;dexterity&#8217;, self)</div></blockquote>
+<p>&#64;property
+def perception(self):</p>
+<blockquote>
+<div>return self.base_perception + calcBonuses(&#8216;perception&#8217;, self)</div></blockquote>
+<p>&#64;property
+def intelligence(self):</p>
+<blockquote>
+<div>return self.base_intelligence + calcBonuses(&#8216;intelligence&#8217;, self)</div></blockquote>
+<p>&#64;property
+def wits(self):</p>
+<blockquote>
+<div>return self.base_wits + calcBonuses(&#8216;wits&#8217;, self)</div></blockquote>
+<dl class="last docutils">
+<dt>def dodgeDV(self):</dt>
+<dd>&#8220;&#8221;&#8221; Returns (Essence + DEX + Dodge) / 2 &#8220;&#8221;&#8221;
+return ((self.essence + self.dexterity + self.skills[&#8216;Dodge&#8217;])/2) #+ calcBonuses(&#8216;dodgeDV&#8217;, self)</dd>
+<dt>def bashing_soak(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Iterates through armor slots</dt>
+<dd>sums up the bashing soak properties,
+adds stamina and then returns it</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from utils import get_equipped_in_slot</p>
+<p>armor_slots = [&#8216;head&#8217;, &#8216;chest&#8217;, &#8216;arms&#8217;, &#8216;legs&#8217;, &#8216;feet&#8217;, &#8216;hands&#8217;]
+soak = self.stamina
+for slot in armor_slots:</p>
+<blockquote>
+<div><p>item = get_equipped_in_slot(slot)
+if item is not None:</p>
+<blockquote>
+<div>soak += item.armor.bashing_soak</div></blockquote>
+</div></blockquote>
+<p class="last">return soak</p>
+</dd>
+<dt>def lethal_soak(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Iterates through armor slots</dt>
+<dd>sums up the lethal soak properties,
+adds stamina and then returns it</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from utils import get_equipped_in_slot</p>
+<p>armor_slots = [&#8216;head&#8217;, &#8216;chest&#8217;, &#8216;arms&#8217;, &#8216;legs&#8217;, &#8216;feet&#8217;, &#8216;hands&#8217;]
+if self.essence &gt; 0:</p>
+<blockquote>
+<div>soak = int(math.floor(self.stamina/2))</div></blockquote>
+<dl class="docutils">
+<dt>else:</dt>
+<dd>soak = 0</dd>
+<dt>for slot in armor_slots:</dt>
+<dd><p class="first">item = get_equipped_in_slot(slot)
+if item is not None:</p>
+<blockquote class="last">
+<div>soak += item.armor.lethal_soak</div></blockquote>
+</dd>
+</dl>
+<p class="last">return soak</p>
+</dd>
+<dt>def hardness(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Iterates through armor slots</dt>
+<dd>sums up the hardness properties,
+and then returns it</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from utils import get_equipped_in_slot</p>
+<p>armor_slots = [&#8216;head&#8217;, &#8216;chest&#8217;, &#8216;arms&#8217;, &#8216;legs&#8217;, &#8216;feet&#8217;, &#8216;hands&#8217;]
+hardness = 0
+for slot in armor_slots:</p>
+<blockquote>
+<div><p>item = get_equipped_in_slot(slot)
+if item is not None:</p>
+<blockquote>
+<div>hardness += item.armor.hardness</div></blockquote>
+</div></blockquote>
+<p class="last">return hardness</p>
+</dd>
+<dt>def fov(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Returns a maximum viewing distance,</dt>
+<dd>calculated from Perception + (Awareness*2) + Bonuses
+with a minimum of 3</dd>
+</dl>
+<p class="last">&#8220;&#8221;&#8221;
+return max(3, int(self.perception + self.skills[&#8216;Awareness&#8217;]*2 + calcBonuses(&#8216;awareness&#8217;, self)))</p>
+</dd>
+<dt>def foh(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Returns a maximum hearing distance,</dt>
+<dd>calculated from Perception + (Awareness*3) + Bonuses
+with a minimum of 3</dd>
+</dl>
+<p class="last">&#8220;&#8221;&#8221;
+return max(3, int(self.perception + self.skills[&#8216;Awareness&#8217;]*3 + calcBonuses(&#8216;awareness&#8217;, self)))</p>
+</dd>
+<dt>def onslaughtPenalty(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Returns the onslaught Penalty as an integer</dt>
+<dd>calculated from adjacent enemies - 1</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from utils import adjacent, is_player</p>
+<p>penalty = -1
+for spot in adjacent(self.owner.x, self.owner.y):</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>for obj in gvar.game.objects:</dt>
+<dd><dl class="first last docutils">
+<dt>if obj.fighter and not is_player(obj) and obj.x == spot[0] and obj.y == spot[1]:</dt>
+<dd>penalty += 1</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p class="last">return penalty</p>
+</dd>
+<dt>def take_damage(self, damage):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Apply the given amount of damage</dt>
+<dd>and invoke the death_function, if necessary</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from utils import is_player</p>
+<dl class="last docutils">
+<dt>if not is_player (self.owner):</dt>
+<dd><dl class="first last docutils">
+<dt>for level in [0, 1, 2, 3]:                                      # go through all Health Levels</dt>
+<dd><dl class="first last docutils">
+<dt>if damage &gt; 0 and self.hl[level] &gt; 0:</dt>
+<dd><p class="first">d = damage - self.hl[level]
+if d &gt;= 0:</p>
+<blockquote>
+<div>self.hl[level] = 0
+damage = d</div></blockquote>
+<dl class="last docutils">
+<dt>else:</dt>
+<dd>self.hl[level] -= damage
+damage = 0</dd>
+</dl>
+</dd>
+<dt>if level == 3 and self.hl[level] &lt;= 0:</dt>
+<dd><p class="first">function = self.death_function
+if function is not None:</p>
+<blockquote class="last">
+<div>function(self.owner)                    # Apply Death Function if possible</div></blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>def attack(self, target, ranged=False):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Performs an attack against the target.</dt>
+<dd>Melee or ranged indicated by ranged boolean &#8220;&#8221;&#8220;</dd>
+</dl>
+<p>from utils import get_equipped_in_slot,d10, is_player
+from render import message</p>
+<p>activeWeapon = get_equipped_in_slot(&#8216;hand&#8217;)
+if (activeWeapon is None):                                                                              # get equipped weapon from slot &#8216;hand&#8217;</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>activeWeapon = Equipment(slot=&#8217;hand&#8217;, weapon=Weapon())          # Insert dummy weapon if no weapon is equipped</dt>
+<dd># TODO Two-Handed Weapons</dd>
+</dl>
+</div></blockquote>
+<p>weapon = activeWeapon.ranged if ranged else activeWeapon.weapon                                 # determine weapon/ranged component to use</p>
+<p>hitroll = d10(self.dexterity + self.skills[weapon.skill], &#8216;Hit&#8217;, player=is_player(self.owner))
+if hitroll[0] != &#8216;botch&#8217;:</p>
+<blockquote>
+<div>hitroll[0] -= self.health_penalty()
+hitroll[0] = max(hitroll[0], 0)</div></blockquote>
+<dl class="docutils">
+<dt>else:</dt>
+<dd>pass    #TODO Botch Behaviour</dd>
+</dl>
+<p># Check for hit, if successes &gt; enemy&#8217;s dodge DV ( -onslaughtPenalty for player)
+threshold = target.dodgeDV()
+threshold -= target.onslaughtPenalty() if is_player(target.owner) else 0</p>
+<dl class="docutils">
+<dt>if hitroll[0] != &#8216;botch&#8217; and hitroll[0] &gt; threshold:    # target hit, roll damage</dt>
+<dd><dl class="first docutils">
+<dt>if ranged:</dt>
+<dd>dmgroll = d10(weapon.damage, &#8216;Damage&#8217;, botchable=False, player=is_player(self.owner))</dd>
+<dt>else:</dt>
+<dd>dmgroll = d10(self.strength + weapon.damage, &#8216;Damage&#8217;, botchable=False, player=is_player(self.owner))</dd>
+</dl>
+<p>damage = dmgroll[0] + (hitroll[0] - threshold)          # add remaining successes from hitroll</p>
+<dl class="last docutils">
+<dt>if damage &gt; target.hardness():                                          # check if damage is bigger than hardness</dt>
+<dd><dl class="first last docutils">
+<dt>if weapon.damage_type == &#8216;bashing&#8217;:                             # apply soak</dt>
+<dd>damage -= target.bashing_soak()</dd>
+<dt>elif weapon.damage_type == &#8216;lethal&#8217;:</dt>
+<dd>damage -= target.lethal_soak()</dd>
+<dt>if damage &gt; 0:                                                                  # apply damage</dt>
+<dd>message(self.owner.name.capitalize() + &#8216; hits &#8216; + target.owner.name + &#8216; for &#8216; + str(damage) + &#8216; hit points.&#8217;)
+target.take_damage(damage)</dd>
+<dt>else:</dt>
+<dd>message(self.owner.name.capitalize() + &#8216; hits &#8216; + target.owner.name + &#8216; but the strike bounces off his armor!&#8217;)</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>else:</dt>
+<dd>message(self.owner.name.capitalize() + &#8216; attacks &#8216; + target.owner.name + &#8216; but misses.&#8217;)</dd>
+</dl>
+<p class="last">return weapon.speed</p>
+</dd>
+<dt>def heal(self, amount):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Heal by the given amount,</dt>
+<dd>iterating through the health levels,
+without going over the maximum</dd>
+</dl>
+<p>&#8220;&#8221;&#8220;</p>
+<dl class="last docutils">
+<dt>for level in [3, 2, 1, 0]:</dt>
+<dd><dl class="first last docutils">
+<dt>if amount &gt; 0 and self.hl[level] &lt; self.max_hl[level]:</dt>
+<dd><p class="first">d = amount - (self.max_hl[level] - self.hl[level])
+if d &gt;= 0:</p>
+<blockquote>
+<div>self.hl[level] = self.max_hl[level]
+amount = d</div></blockquote>
+<dl class="last docutils">
+<dt>else:</dt>
+<dd>self.hl[level] += amount
+amount = 0</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>def health_penalty(self):</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Returns the current health penalty &#8220;&#8221;&#8220;</p>
+<dl class="docutils">
+<dt>for level in [3, 2, 1, 0]:</dt>
+<dd><dl class="first last docutils">
+<dt>if self.hl[level] &lt;= 0:</dt>
+<dd><dl class="first last docutils">
+<dt>if level == 2:</dt>
+<dd>return 4</dd>
+<dt>elif level == 1:</dt>
+<dd>return 2</dd>
+<dt>elif level == 0:</dt>
+<dd>return 1</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="last">return 0</p>
+</dd>
+<dt>def join_battle(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Decreases the overall tick level.</dt>
+<dd>Puts owner into global Tick counter
+with join battle roll as Priority</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from utils import d10, is_player, decrease_tick_level</p>
+<p>decrease_tick_level()
+# Roll Wits + Awareness as Join Battle
+roll = d10(self.wits + self.skills[&#8220;Awareness&#8221;], &#8216;Join Battle&#8217;, botchable=False, player=is_player(self.owner))
+if not gvar.game.ticks.contains(self.owner):</p>
+<blockquote class="last">
+<div>gvar.game.ticks.put(self.owner, roll[0])</div></blockquote>
+</dd>
+<dt>def movement_speed(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Returns the movement speed</dt>
+<dd>calculated through 5 - Athletics/2</dd>
+</dl>
+<p class="last">&#8220;&#8221;&#8221;
+#TODO Better calculation
+return max(1, 5 - math.floor(self.skills[&#8220;Athletics&#8221;]/2))</p>
+</dd>
+</dl>
+</dd>
+<dt>class MobAI:</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; AI for NPCs</dt>
+<dd>Can have different statuses for different behaviour
+StatusDelta is the remaining turns till the status wears off</dd>
+</dl>
+<p>&#8220;&#8221;&#8220;</p>
+<dl class="last docutils">
+<dt>def __init__(self, status=None, statusDelta=0):</dt>
+<dd>self.status = status
+self.statusDelta = statusDelta</dd>
+<dt>def applyStatus(self, status, rounds):</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Apply a new status &#8220;&#8221;&#8220;</p>
+<p class="last">self.status = status
+self.statusDelta = rounds</p>
+</dd>
+<dt>def take_turn(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Normal Turn Routine</dt>
+<dd>Mobs take turns if the player can hear it #TODO Change to Mob&#8217;s FOH
+If they&#8217;re close enough, they attack</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from render import message
+from utils import a_star_search, applyBonus, revertBonus</p>
+<p>mob = self.owner
+status = self.status
+delta = self.statusDelta</p>
+<p>speed = 1       # Base speed of 1 tick, to prevent infinite mob action loops</p>
+<p>if libtcod.map_is_in_fov(gvar.foh_map, mob.x, mob.y):</p>
+<blockquote>
+<div><p># Normal Behaviour
+if not status:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>if mob.distance_to(gvar.game.player) &gt;= 2:      # Move towards the player, if she&#8217;s too far away</dt>
+<dd><p class="first">destination = a_star_search((mob.x, mob.y),(gvar.game.player.x, gvar.game.player.y)) # Perform A*-Search</p>
+<dl class="docutils">
+<dt>if destination == [(mob.x, mob.y), (mob.x, mob.y)]:     # idle for the next 3 turns, if no path to player is found</dt>
+<dd>self.status = &#8216;idle&#8217;                                                    #TODO Should have prevented A*-Overload, doesn&#8217;t seem to work
+self.statusDelta = 3</dd>
+</dl>
+<p class="last">mob.move_to(destination[-2])
+speed = self.owner.fighter.movement_speed()</p>
+</dd>
+<dt>elif sum(gvar.game.player.fighter.hl) &gt; 0:                              # Player is close enough, perform an attack</dt>
+<dd>speed = mob.fighter.attack(gvar.game.player.fighter)</dd>
+</dl>
+</div></blockquote>
+<p># Confusion - Moves to random directions, also -4 dodgeDV penalty
+elif status == &#8216;confusion&#8217;:</p>
+<blockquote>
+<div><p>applyBonus(&#8216;dodgeDV&#8217;, -4, self.owner.fighter)
+if delta &gt; 0:</p>
+<blockquote>
+<div>self.owner.move(libtcod.random_get_int(0, -1, 1), libtcod.random_get_int(0, -1, 1))
+self.statusDelta -= 1</div></blockquote>
+<dl class="docutils">
+<dt>else:</dt>
+<dd>revertBonus(&#8216;dodgeDV&#8217;, -4, self.owner.fighter)
+self.status = None
+message(&#8216;The smoke around the &#8216; + self.owner.name + &#8216; disappears.&#8217;, libtcod.violet)</dd>
+<dt>if self.owner.fighter is not None:</dt>
+<dd>speed = self.owner.fighter.movement_speed()</dd>
+</dl>
+</div></blockquote>
+<p># Idle - Don&#8217;t do anything, Speed 3
+elif status == &#8216;idle&#8217;:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>if delta &gt; 0:</dt>
+<dd>self.statusDelta -= 1</dd>
+<dt>else:</dt>
+<dd>self.status = None</dd>
+</dl>
+<p>speed = 3</p>
+</div></blockquote>
+</div></blockquote>
+<p class="last">return speed</p>
+</dd>
+</dl>
+</dd>
+<dt>class Item:</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; An item that can be picked up and used.</dt>
+<dd>args is a List of Args that are passed to the use_function</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+def __init__(self, use_function=None, args=[], count=1):</p>
+<blockquote>
+<div>self.use_function = use_function
+self.args = args
+self.count = count</div></blockquote>
+<dl class="last docutils">
+<dt>def pick_up(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Add the item to the player&#8217;s inventory</dt>
+<dd>#TODO Inventory System for Enemies and other NPCs</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from render import message</p>
+<dl class="last docutils">
+<dt>if len(gvar.game.player.inventory) &gt;= 26:       # Inventory Full, Alphabetical Limit</dt>
+<dd><blockquote class="first">
+<div>#TODO Multi-Page Menus &amp; Encumbrance System</div></blockquote>
+<p class="last">message(&#8216;Your inventory is full, cannot pick up &#8216; + self.owner.name + &#8216;.&#8217;, libtcod.red)</p>
+</dd>
+<dt>else:</dt>
+<dd><dl class="first docutils">
+<dt>for item in gvar.game.player.inventory: # Loop through items already in inventory</dt>
+<dd><dl class="first last docutils">
+<dt>if item.name == self.owner.name:        # and stack them</dt>
+<dd>item.item.count += 1
+print item.item.count
+gvar.game.objects.remove(self.owner)    # Remove the item from the map
+message(&#8216;You picked up a &#8216; + self.owner.name + &#8216;!&#8217;, libtcod.green)
+return</dd>
+</dl>
+</dd>
+</dl>
+<p class="last">gvar.game.player.inventory.append(self.owner)
+gvar.game.objects.remove(self.owner)
+message(&#8216;You picked up a &#8216; + self.owner.name + &#8216;!&#8217;, libtcod.green)</p>
+</dd>
+</dl>
+</dd>
+<dt>def use(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; call the use_function, if its defined</dt>
+<dd>if there are args, add them to the call</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from render import message</p>
+<dl class="last docutils">
+<dt>if self.use_function is None and self.owner.equipment is None:          # No valid action found</dt>
+<dd>message(&#8216;The &#8216; + self.owner.name + &#8216; cannot be used.&#8217;)</dd>
+<dt>elif self.use_function is None and self.owner.equipment is not None:# It&#8217;s an Equipment, equip it</dt>
+<dd>self.owner.equipment.toggle_equip()</dd>
+<dt>else:</dt>
+<dd><dl class="first last docutils">
+<dt>if len(self.args) == 0:</dt>
+<dd><dl class="first last docutils">
+<dt>if self.use_function() != &#8216;cancelled&#8217;:                                          # It can be used, call use_function</dt>
+<dd><dl class="first last docutils">
+<dt>if self.count&gt;=2:                                                                               # Decrease Stack count, or remove the item</dt>
+<dd>self.count -= 1</dd>
+<dt>else:</dt>
+<dd>gvar.game.player.inventory.remove(self.owner)           #TODO Inventory for Mobs</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>else:</dt>
+<dd><dl class="first last docutils">
+<dt>if self.use_function(self.args[0], self.args[1]) != &#8216;cancelled&#8217;:</dt>
+<dd><dl class="first last docutils">
+<dt>if self.count&gt;=2:</dt>
+<dd>self.count -= 1</dd>
+<dt>else:</dt>
+<dd>gvar.game.player.inventory.remove(self.owner)           #TODO Inventory for Mobs</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>def drop(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Drop the Item</dt>
+<dd>Add it to the Global Objects List
+and set it&#8217;s coordinates to the dropper&#8217;s</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from render import message</p>
+<dl class="docutils">
+<dt>if self.owner.equipment:</dt>
+<dd>self.owner.equipment.dequip()</dd>
+</dl>
+<p class="last">objects.append(self.owner)
+gvar.game.player.inventory.remove(self.owner)
+self.owner.x = gvar.game.player.x
+self.owner.y = gvar.game.player.y
+message(&#8216;You dropped a &#8216; + self.owner.name + &#8216;.&#8217;, libtcod.yellow)</p>
+</dd>
+</dl>
+</dd>
+<dt>class Equipment:</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; A component representing equippable objects</dt>
+<dd>armors, weapons, rings, clothes, etc.</dd>
+</dl>
+<p>&#8220;&#8221;&#8220;</p>
+<dl class="last docutils">
+<dt>def __init__(self, slot, is_equipped=False, bonus={}, weapon=None, ranged=None, armor=None):</dt>
+<dd>self.slot = slot                                        # string,  armor slot, possibilities: [&#8216;head&#8217;, &#8216;chest&#8217;, &#8216;arms&#8217;, &#8216;legs&#8217;, &#8216;feet&#8217;, &#8216;hands&#8217;]
+self.is_equipped = is_equipped          # boolean, equip status
+self.bonus = bonus                                      # dict, format: {attribute/skill: value} for
+self.weapon = weapon                            # Weapon() component
+self.ranged = ranged                            # Ranged() component
+self.armor = armor                                      # Armor() component</dd>
+<dt>def toggle_equip(self):</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Equips or Dequips the Equipment &#8220;&#8221;&#8220;</p>
+<dl class="last docutils">
+<dt>if self.is_equipped:</dt>
+<dd>self.dequip()</dd>
+<dt>else:</dt>
+<dd>self.equip()</dd>
+</dl>
+</dd>
+<dt>def equip(self):</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Equips the Equipment</dt>
+<dd>Dequipping other items in this slot</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from utils import get_equipped_in_slot
+from render import message</p>
+<p>currentEquipped = get_equipped_in_slot(self.slot)
+if currentEquipped is not None:</p>
+<blockquote>
+<div>currentEquipped.dequip()</div></blockquote>
+<p class="last">self.is_equipped = True
+message(&#8216;Equipped the &#8216; + self.owner.name, libtcod.yellow)</p>
+</dd>
+<dt>def dequip(self):</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Dequips the Equipment&#8221;&#8220;&#8221;
+from render import message</p>
+<p class="last">if not self.is_equipped: return
+self.is_equipped = False
+message(&#8216;Put off the &#8216; + self.owner.name, libtcod.yellow)</p>
+</dd>
+</dl>
+</dd>
+<dt>class Weapon:</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Component for Weapon stats to be included in Equipment &#8220;&#8221;&#8220;</p>
+<dl class="last docutils">
+<dt>def __init__(self, accuracy=0, damage=0, damage_type=&#8217;lethal&#8217;, skill=&#8217;Martial-Arts&#8217;, speed=5):</dt>
+<dd>self.accuracy = accuracy
+self.damage = damage
+self.damage_type = damage_type
+self.skill = skill
+self.speed = speed</dd>
+</dl>
+</dd>
+<dt>class Ranged:</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Component for Ranged Weapon stats to be included in Equipment &#8220;&#8221;&#8220;</p>
+<dl class="last docutils">
+<dt>def __init__(self, accuracy=0, damage=0, damage_type=&#8217;lethal&#8217;, skill=&#8217;Archery&#8217;, speed=5):</dt>
+<dd>self.accuracy = accuracy
+self.damage = damage
+self.damage_type = damage_type
+self.skill = skill
+self.speed = speed</dd>
+</dl>
+</dd>
+<dt>class Armor:</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Component for Armor stats to be included in Equipment &#8220;&#8221;&#8220;</p>
+<dl class="last docutils">
+<dt>def __init__(self, bashing_soak=0, lethal_soak=0, fatigue=0, penalty=0, hardness=0):</dt>
+<dd>self.bashing_soak = bashing_soak
+self. lethal_soak = lethal_soak
+self.fatigue = fatigue
+self.penalty = penalty
+self.hardness = hardness</dd>
+</dl>
+</dd>
+</dl>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/components.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Nicas Kilian Heydorn.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      
+      |
+      <a href="_sources/components.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>

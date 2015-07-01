@@ -1,0 +1,196 @@
+{
+	"1": [
+		{
+			"name": "Goblin",
+			"character": "g",
+			"color": [69 ,173 ,69],
+			"exp": 10,
+			"hl": [1, 1, 0, 1],
+			"essence": 0,
+			"strength": 1,
+			"dexterity": 2,
+			"skills": {
+				"Dodge": 3,
+				"Martial-Arts": 2
+			},
+			"packsize": [2,8]
+		},
+		{
+			"name": "Orc",
+			"character": "o",
+			"color": [69 ,173 ,69],
+			"exp": 15,
+			"hl": [2, 2, 1, 1],
+			"essence": 0,
+			"strength": 1,
+			"dexterity": 2,
+			"skills": {
+				"Dodge": 2,
+				"Martial-Arts": 2
+			},
+			"packsize": [1,3]
+		},
+		{
+			"name": "Wolf",
+			"character": "w",
+			"color": [150 ,150 ,150],
+			"exp": 15,
+			"hl": [3, 1, 3, 0],
+			"essence": 0,
+			"strength": 2,
+			"dexterity": 2,
+			"skills": {
+				"Dodge": 2,
+				"Martial_Arts": 2
+			},
+			"packsize": [3,4]
+		}
+	],
+	"2": [
+		{
+			"name": "Troll",
+			"character": "T",
+			"color": [7 ,145 ,7],
+			"exp": 30,
+			"hl": [1, 2, 3, 3],
+			"essence": 0,
+			"strength": 3,
+			"dexterity": 2,
+			"skills": {
+				"Martial_Arts": 3
+			},
+			"packsize": [1,1]
+		},
+		{
+			"name": "Wood Spider",
+			"character": "s",
+			"color": [200 ,70 ,70],
+			"exp": 30,
+			"hl": [2, 3, 3, 4],
+			"essence": 0,
+			"strength": 2,
+			"dexterity": 4,
+			"skills": {
+				"Martial_Arts": 1
+			},
+			"packsize": [1,1]
+		}
+	],
+	"3": [
+		{
+			"name": "Troll",
+			"character": "T",
+			"color": [7 ,145 ,7],
+			"exp": 30,
+			"hl": [1, 2, 3, 3],
+			"essence": 0,
+			"strength": 4,
+			"dexterity": 2,
+			"skills": {
+				"Martial_Arts": 4
+			},
+			"packsize": [1,2]
+		},
+		{
+			"name": "Wood Spider",
+			"character": "s",
+			"color": [200 ,70 ,70],
+			"exp": 30,
+			"hl": [2, 3, 3, 4],
+			"essence": 0,
+			"strength": 2,
+			"dexterity": 4,
+			"skills": {
+			},
+			"packsize": [1,1]
+		}
+	],
+	"4": [
+		{
+			"name": "Troll",
+			"character": "T",
+			"color": [7 ,145 ,7],
+			"exp": 30,
+			"hl": [1, 2, 3, 3],
+			"essence": 0,
+			"strength": 4,
+			"dexterity": 1,
+			"skills": {
+				"Martial_Arts": 4
+			},
+			"packsize": [1,2]
+		},
+		{
+			"name": "Cave Fiend",
+			"character": "F",
+			"color": [200 ,0 ,0],
+			"exp": 120,
+			"hl": [3, 4, 4, 6],
+			"essence": 0,
+			"strength": 4,
+			"dexterity": 4,
+			"skills": {
+				"Martial_Arts": 5
+			},
+			"packsize": [1,1]
+		}
+	],
+	"5": [
+		{
+			"name": "Troll",
+			"character": "T",
+			"color": [7 ,145 ,7],
+			"exp": 30,
+			"hl": [1, 2, 3, 3],
+			"essence": 0,
+			"strength": 4,
+			"dexterity": 1,
+			"skills": {
+				"Martial_Arts": 4
+			},
+			"packsize": [1,2]
+		},
+		{
+			"name": "Wood Spider",
+			"character": "s",
+			"color": [30 ,0 ,0],
+			"exp": 30,
+			"hl": [2, 3, 3, 4],
+			"essence": 0,
+			"strength": 2,
+			"dexterity": 4,
+			"skills": {
+			},
+			"packsize": [1,1]
+		}
+	],
+	"6": [
+		{
+			"name": "Troll",
+			"character": "T",
+			"color": [7 ,145 ,7],
+			"exp": 30,
+			"hl": [1, 2, 3, 3],
+			"essence": 0,
+			"strength": 4,
+			"dexterity": 1,
+			"skills": {
+				"Martial_Arts": 4
+			},
+			"packsize": [1,2]
+		},
+		{
+			"name": "Wood Spider",
+			"character": "s",
+			"color": [30 ,0 ,0],
+			"exp": 30,
+			"hl": [2, 3, 3, 4],
+			"essence": 0,
+			"strength": 2,
+			"dexterity": 4,
+			"skills": {
+			},
+			"packsize": [1,1]
+		}
+	]
+}

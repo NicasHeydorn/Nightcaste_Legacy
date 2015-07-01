@@ -1,0 +1,22 @@
+{
+	"name": "",
+	"character": "",
+	"color": [255, 255, 255],
+	"use_function": "",
+	"args": [],
+	"equipment": {
+		"slot": "",
+		"weapon": {
+			"accuracy": 0,
+			"damage": 0,
+			"skill": ""
+		},
+		"armor": {
+			"bashing_soak": 0,
+			"lethal_soak": 0,
+			"fatigue": 0,
+			"penalty": 0,
+			"hardness": 0
+		}
+	}
+}

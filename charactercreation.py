@@ -1,0 +1,107 @@
+import gvar
+
+def create_character():
+	""" |  Inits the Stats of the player
+		|  and controls menu flow of the character creation process
+	"""
+
+	reset_attributes()
+
+	attrs = distribute_attributes()
+	if attrs == 'exit':
+		return 'exit'
+	else:
+		skills = distribute_skills()
+		if skills == 'exit':
+			return 'exit'
+		elif skills == 'back':
+			create_character()
+
+
+
+def reset_attributes():
+	""" Resets the attributes of the player Object to 1 """
+
+	gvar.game.player.fighter.strength = 1
+	gvar.game.player.fighter.dexterity = 1
+	gvar.game.player.fighter.stamina = 1
+	gvar.game.player.fighter.perception = 1
+	gvar.game.player.fighter.wits = 1
+
+
+
+def distribute_attributes():
+	""" |  Shows a menu for distributing attribute points
+		|  and continue until attribute points are depleted
+	"""
+	from render import menu
+
+	attributes_points = 6
+	reset_attributes()
+	while attributes_points > 0:
+		attributes_choice = menu("ATTRIBUTES\nPress a key to distribute points\n\nPoints remaining: " + str(attributes_points),
+			["Strength", "Dexterity", "Stamina", "Perception", "Wits"],
+			gvar.SCREEN_WIDTH/2,
+			option_descriptions=[
+									str(gvar.game.player.fighter.strength),
+									str(gvar.game.player.fighter.dexterity),
+									str(gvar.game.player.fighter.stamina),
+									str(gvar.game.player.fighter.perception),
+									str(gvar.game.player.fighter.wits)
+								])
+
+		if attributes_choice == 0:
+			gvar.game.player.fighter.strength += 1
+		elif attributes_choice == 1:
+			gvar.game.player.fighter.dexterity += 1
+		elif attributes_choice == 2:
+			gvar.game.player.fighter.stamina += 1
+		elif attributes_choice == 3:
+			gvar.game.player.fighter.perception += 1
+		elif attributes_choice == 4:
+			gvar.game.player.fighter.wits += 1
+		elif attributes_choice == 'exit':
+			return 'exit'
+		else:
+			continue
+		attributes_points -= 1
+
+def distribute_skills():
+	""" |  Shows a menu to distribute skill points
+		|  until skill points are depleted
+		|  resetting skill points to prevent cheating
+		|  Not all skills are listed here yet, because not all skills are implemented
+	"""
+	from render import menu
+
+	for skill in gvar.game.player.fighter.skills: 		# Reset Skill points
+		gvar.game.player.fighter.skills[skill] = 0
+	skill_points = 10			# Points to be distributed
+	skill_limit = 3				# Maximum skill level
+	skills = ['Martial-Arts',	# Available Skills
+			 'Melee',
+			 'Archery',
+			 'Athletics',
+			 'Awareness',
+			 'Dodge',
+			 'Resistance',
+			 'Medicine']
+	descriptions = []
+	for skill in skills:
+		descriptions.append(0)
+	while skill_points > 0:
+		for skill in skills:
+			descriptions[skills.index(skill)] = str(gvar.game.player.fighter.skills[skill])
+		skill_choice = menu("SKILLS\nPress a key to distribute points\n\nPoints remaining: " + str(skill_points), skills, gvar.SCREEN_WIDTH/2, option_descriptions=descriptions)
+		if skill_choice == 'exit':
+			skill_points = 0
+			return 'exit'
+			break
+		elif skill_choice >= 0 and skill_choice < len(skills):
+			if gvar.game.player.fighter.skills[skills[skill_choice]] < 3:
+				gvar.game.player.fighter.skills[skills[skill_choice]] += 1
+			else:
+				continue
+		else:
+			continue
+		skill_points -= 1

@@ -1,0 +1,212 @@
+{
+	"0":[
+			{
+				"name": "Small red potion",
+				"character": "v",
+				"color": [240, 40, 40],
+				"use_function": "cast_heal",
+				"args": [3, 6],
+				"amount": [1,1],
+				"equipment": {}
+			},
+			{
+				"name": "Mundane Sword",
+				"character": "/",
+				"color": [255, 255, 255],
+				"use_function": "",
+				"args": [],
+				"amount": [1,1],
+				"equipment": {
+					"slot": "hand",
+					"weapon": {
+						"accuracy": 2,
+						"speed": 5,
+						"damage": 3,
+						"damage_type": "lethal",
+						"skill": "Melee"
+					}
+				}
+			},
+			{
+				"name": "Mundane Mace",
+				"character": "/",
+				"color": [255, 255, 255],
+				"use_function": "",
+				"args": [],
+				"amount": [1,1],
+				"equipment": {
+					"slot": "hand",
+					"weapon": {
+						"accuracy": 1,
+						"speed": 6,
+						"damage": 5,
+						"damage_type": "bashing",
+						"skill": "Melee"
+					}
+				}
+			},
+			{
+				"name": "Sai",
+				"character": "/",
+				"color": [255, 255, 255],
+				"use_function": "",
+				"args": [],
+				"amount": [1,1],
+				"equipment": {
+					"slot": "hand",
+					"weapon": {
+						"accuracy": 4,
+						"speed": 4,
+						"damage": 1,
+						"damage_type": "lethal",
+						"skill": "Martial-Arts"
+					}
+				}
+			},
+			{
+				"name": "Mundane Bow",
+				"character": "}",
+				"color": [255, 255, 255],
+				"use_function": "",
+				"args": [],
+				"amount": [1,1],
+				"equipment": {
+					"slot": "hand",
+					"weapon": {
+						"ranged": true,
+						"accuracy": 0,
+						"speed": 5,
+						"damage": 0,
+						"damage_type": "bashing",
+						"skill": "Melee",
+						"ranged_accuracy": 4,
+						"ranged_speed": 5,
+						"ranged_damage": 2,
+						"ranged_damage_type": "lethal",
+						"ranged_skill": "Archery"
+					}
+				}
+			},
+			{
+				"name": "Leather Rags",
+				"character": "&",
+				"color": [255, 255, 255],
+				"use_function": "",
+				"args": [],
+				"amount": [1,1],
+				"equipment": {
+					"slot": "chest",
+					"armor": {
+						"bashing_soak": 2,
+						"lethal_soak": 2,
+						"fatigue": 1,
+						"penalty": -1,
+						"hardness": 0
+					}
+				}
+			},
+			{
+				"name": "Leather Cap",
+				"character": "^",
+				"color": [255, 255, 255],
+				"use_function": "",
+				"args": [],
+				"amount": [1,1],
+				"equipment": {
+					"slot": "head",
+					"armor": {
+						"bashing_soak": 1,
+						"lethal_soak": 1,
+						"fatigue": 0,
+						"penalty": 0,
+						"hardness": 0
+					}
+				}
+			},
+			{
+				"name": "Leather Boots",
+				"character": "&",
+				"color": [255, 255, 255],
+				"use_function": "",
+				"args": [],
+				"amount": [1,1],
+				"equipment": {
+					"slot": "feet",
+					"armor": {
+						"bashing_soak": 2,
+						"lethal_soak": 1,
+						"fatigue": 0,
+						"penalty": 0,
+						"hardness": 0
+					}
+				}
+			},
+			{
+				"name": "Linen Gloves",
+				"character": "&",
+				"color": [255, 255, 255],
+				"use_function": "",
+				"args": [],
+				"amount": [1,1],
+				"equipment": {
+					"slot": "hands",
+					"armor": {
+						"bashing_soak": 2,
+						"lethal_soak": 1,
+						"fatigue": 0,
+						"penalty": 0,
+						"hardness": 0
+					}
+				}
+			}
+	],
+	"1":[
+			{
+				"name": "Violet Scroll",
+				"character": "~",
+				"color": [145,7,145],
+				"use_function": "cast_confusion",
+				"args": [4,10],
+				"amount": [1,1],
+				"equipment": {}
+			},
+			{
+				"name": "Red potion",
+				"character": "v",
+				"color": [240, 40, 40],
+				"use_function": "cast_heal",
+				"args": [5, 8],
+				"amount": [1,1],
+				"equipment": {}
+			}
+	],
+	"2": [
+			{
+				"name": "Red Scroll",
+				"character": "~",
+				"color": [180, 20, 20],
+				"use_function": "cast_fireball",
+				"args": [3,8],
+				"amount": [1,1],
+				"equipment": {}
+			},
+			{
+				"name": "Turquoise Scroll",
+				"character": "~",
+				"color": [8, 209, 189],
+				"use_function": "cast_lightning",
+				"args": [4, 10],
+				"amount": [1,1],
+				"equipment": {}
+			},
+			{
+				"name": "Big Red potion",
+				"character": "v",
+				"color": [240, 40, 40],
+				"use_function": "cast_heal",
+				"args": [7, 12],
+				"amount": [1,1],
+				"equipment": {}
+			}
+	]
+}

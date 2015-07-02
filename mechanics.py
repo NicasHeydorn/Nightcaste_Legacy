@@ -2,6 +2,8 @@
 
 import libtcodpy as libtcod
 import gvar
+from spawn import spawn_player
+
 
 def player_move_or_attack(dx, dy):
 	""" Move the player to the given direction. If a mob is found there, attack it. """
@@ -23,7 +25,6 @@ def player_move_or_attack(dx, dy):
 		gvar.game.player.move(dx, dy)
 		gvar.fov_recompute = True
 		return gvar.game.player.fighter.movement_speed()
-
 
 
 #Use functions
@@ -84,7 +85,7 @@ def fall_into(entity):
 					message(entity.name + " has fallen down the hole", libtcod.red)
 				else:
 					message("You have fallen down the hole", libtcod.red)
-					entity.fighter.death_function(entity)
+					entity.fighter.death_function()
 		else:
 			#no ledge near
 			if not is_player:

@@ -37,7 +37,13 @@ class Tile:
 
 class Rect:
 	""" A Rectangle used for creating rooms on the map """
-	def __init__(self, map, x, y, w, h):
+	def __init__(self, map, x, y, w, h, id=None):
+		import random, string
+
+		if id is None:
+			self.id = 'r-' + ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(8))
+		else:
+			self.id = id
 		self.map = map
 		self.x1 = x 			#: Left X-Axis Boundary
 		self.y1 = y 			#: Top Y-Axis Boundary
@@ -175,11 +181,8 @@ class World:
 			self.dungeons = list()
 
 	def random_dungeon(self):
-		import random, string
-		id  = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(8))
 		depth = libtcod.random_get_int(0, 1, 25)
-		print "Dungeon ", id, " has a depth of ", depth
-		dungeon = Dungeon(id=id, depth=depth)
+		dungeon = Dungeon(depth=depth)
 		self.dungeons.append(dungeon)
 
 
@@ -192,8 +195,13 @@ class Dungeon:
 		|  **depth** is the maximum depth of the dungeon, to determine if stairs need to be spawned. Defaults to 1.
 	"""
 
-	def __init__(self, id, maps=None, depth=1):
-		self.id = id
+	def __init__(self, id=None, maps=None, depth=1):
+		import random, string
+
+		if id is None:
+			self.id = 'd-' + ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(8))
+		else:
+			self.id = id
 		if maps is None:
 			self.maps = list()
 		self.depth = depth
@@ -220,13 +228,23 @@ class Map:
 		|  **upstairs** and **downstairs** are wuick references to the up- and downstairs objects in the objects array
 	"""
 
-	def __init__(self, map=None, rooms=None, tree=None, objects=None, owner=None):
+	def __init__(self, id=None, map=None, rooms=None, objects=None, owner=None):
+		import random, string
+
+		if id is None:
+			self.id = 'm-' + ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(8))
+		else:
+			self.id = id
+
 		self.map = map
 		if rooms is None:
 			self.rooms = list()
-		self.tree = tree
+		else:
+			self.rooms = rooms
 		if objects is None:
 			self.objects = list()
+		else:
+			self.objects = objects
 		self.owner = owner
 		self.upstairs = None
 		self.downstairs = None
@@ -272,9 +290,9 @@ class Map:
 				for x in range(gvar.MAP_WIDTH) ]
 
 		#Create BSP Tree and Traverse it
-		self.tree = libtcod.bsp_new_with_size(0, 0, gvar.MAP_WIDTH-2, gvar.MAP_HEIGHT-2)
-		libtcod.bsp_split_recursive(self.tree, 0, 4, 8, 8, 1.3, 1.3)
-		libtcod.bsp_traverse_post_order(self.tree, self.process_node, userData=0)
+		tree = libtcod.bsp_new_with_size(0, 0, gvar.MAP_WIDTH-2, gvar.MAP_HEIGHT-2)
+		libtcod.bsp_split_recursive(tree, 0, 4, 8, 8, 1.3, 1.3)
+		libtcod.bsp_traverse_post_order(tree, self.process_node, userData=0)
 
 		#Random Roomfeature
 		for room in self.rooms:
@@ -370,8 +388,7 @@ class Map:
 
 	def set_door(self, x, y):
 		""" Creates a door on the given position. """
-		from mechanics import open_door
-		self.map[x][y] = Tile(char='+', use_function=open_door, tile_type='door', blocked=True, block_sight=True, color=libtcod.light_sepia)
+		self.map[x][y] = Tile(char='+', use_function="open_door", tile_type='door', blocked=True, block_sight=True, color=libtcod.light_sepia)
 
 
 
@@ -389,8 +406,7 @@ class Map:
 
 	def set_hole(self, x, y):
 		""" Creates a hole on the given position. """
-		from mechanics import fall_into
-		self.map[x][y] = Tile(char=' ', tile_type='hole', blocked=False, block_sight=False, ai_blocked=True, step_function=fall_into)
+		self.map[x][y] = Tile(char=' ', tile_type='hole', blocked=False, block_sight=False, ai_blocked=True, step_function="fall_into")
 
 
 

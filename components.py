@@ -8,12 +8,18 @@ from utils import calcBonuses
 class Object:
 	""" Generic Object, which can have multiple components and become the player, a mob, stairs, loot, etc. """
 
-	def __init__(self, currentDungeon, currentLevel, x, y, char, name='', color=libtcod.white, blocks=False, exp=0, always_visible=False, fighter=None, ai=None, item=None, equipment=None, inventory=[], use_function=None, args=None):
+	def __init__(self, currentDungeon, currentLevel, x, y, char, id=None, name='', color=libtcod.white, blocks=False, exp=0, always_visible=False, fighter=None, ai=None, item=None, equipment=None, inventory=[], use_function=None, args=None):
+		import random, string
+
 		self.currentDungeon = currentDungeon
 		self.currentLevel = currentLevel
 		self.x = x
 		self.y = y
 		self.char = char
+		if id is None:
+			self.id = 'o-' + ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(8))
+		else:
+			self.id = id
 		self.color = color
 		self.name = name
 		self.blocks = blocks # boolean - if others can pass through
@@ -92,6 +98,8 @@ class Object:
 		if not self.currentmap().is_blocked(spot[0], spot[1]):
 			self.x = spot[0]
 			self.y = spot[1]
+			if self.currentmap().map[self.x][self.y].step_function is not None:
+				self.currentmap().map[self.x][self.y].step_function(self)
 
 
 
@@ -382,9 +390,8 @@ class Fighter:
 						self.hl[level] -= damage
 						damage = 0
 				if level == 3 and self.hl[level] <= 0:
-					function = self.death_function
-					if function is not None:
-						function(self.owner) 			# Apply Death Function if possible
+					if self.death_function is not None:
+						self.death_function 			# Apply Death Function if possible
 
 
 

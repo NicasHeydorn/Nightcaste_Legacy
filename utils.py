@@ -184,11 +184,13 @@ def fov_distance_coef(spot):
 	distance = get_distance((spot[0], spot[1]), (gvar.game.player.x, gvar.game.player.y))
 	player_fov_distance = int(gvar.game.player.fighter.skills["Awareness"] + gvar.game.player.fighter.perception)
 	coef = player_fov_distance/max(distance, 1)/5
+	if spot == (gvar.game.player.x, gvar.game.player.y):
+		return 1
 	return max(coef, 0.1)
 
 def is_visible((x, y)):
 	""" | returns a boolean value, if the given spot is inside the circular fov field of the player """
-	return (libtcod.map_is_in_fov(gvar.fov_map, x, y) and [x, y] in gvar.fovmap_override.circle)
+	return (libtcod.map_is_in_fov(gvar.fov_map, x, y) and [x, y] in gvar.fovmap_override.circle) or (gvar.game.player.x == x and gvar.game.player.y == y)
 
 
 class PriorityQueue:

@@ -33,12 +33,11 @@ class Game:
 	"""
 	def __init__(self):
 		global playermaxhl
-		from mechanics import player_death
 		from components import Object,Fighter
 		from utils import PriorityQueue
 
 		self.player = Object(currentDungeon=None, currentLevel=0, x=0, y=0, char=chr(2), color=libtcod.white, name='player', blocks=True, inventory=[])
-		compFighter = Fighter(hl=[1,2,2,1], essence=2, strength=1, dexterity=1, stamina=1, death_function=player_death)
+		compFighter = Fighter(hl=[1,2,2,1], essence=2, strength=1, dexterity=1, stamina=1, death_function="player_death")
 		playermaxhl = compFighter.hl
 		self.player.fighter = compFighter
 		self.player.fighter.owner = self.player

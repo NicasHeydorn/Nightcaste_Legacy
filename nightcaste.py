@@ -12,7 +12,7 @@ import mapcreation
 import render
 import utils
 import mechanics
-import shelve
+import save
 
 
 ###############################################################
@@ -21,7 +21,8 @@ import shelve
 
 def new_game():
 	""" |  Start a new game
-		|  Create a map, FOV Map and print Welcome Mesage """
+		|  Create a map, FOV Map and print Welcome Mesage
+	"""
 	from charactercreation import create_character
 	from spawn import spawn_player
 
@@ -36,11 +37,6 @@ def new_game():
 	if ch == 'exit':
 		main_menu()
 	play_game()
-
-def save_game():
-	savegame = shelve.open('nightcaste.sav', 'n')
-	savegame['game'] = gvar.game
-	savegame.close()
 
 
 def next_level():
@@ -85,13 +81,13 @@ def main_menu():
 			new_game()
 		elif choice == 1:
 			try:
-				load_game()
+				save.load_game()
 			except:
 				render.menu('Couldnt load savegame.', ["ok"], 24)
 				continue
 			play_game()
 		elif choice == 2:
-			save_game()
+			save.save_game()
 			raise SystemExit
 
 
@@ -114,7 +110,7 @@ def play_game():
 		if gvar.game.game_state == 'dead':
 			player_action = input.handle_keys()
 			if player_action == 'exit':
-				save_game()
+				save.save_game()
 				break
 			else:
 				continue
@@ -125,7 +121,7 @@ def play_game():
 				#handle keys and exit game if needed
 				player_action = input.handle_keys()
 				if player_action == 'exit':
-					save_game()
+					save.save_game()
 					break
 				gvar.game.ticks.put(actor[1], int(player_action + actor[0]))
 

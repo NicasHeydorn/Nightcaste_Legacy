@@ -208,7 +208,7 @@ def place_item(map, x, y, itemToSpawn):
 	from components import Object, Item, Equipment
 	import mechanics
 
-	compItem = Item(use_function=getattr(mechanics, str(itemToSpawn["use_function"])), args=itemToSpawn["args"], count=libtcod.random_get_int(0, itemToSpawn["amount"][0], itemToSpawn["amount"][1]))
+	compItem = Item(use_function=getattr(mechanics, itemToSpawn["use_function"]), args=itemToSpawn["args"], count=libtcod.random_get_int(0, itemToSpawn["amount"][0], itemToSpawn["amount"][1]))
 	item = Object(map.owner, map.owner.maps.index(map), x, y, str(itemToSpawn["character"]), color=libtcod.Color(itemToSpawn["color"][0], itemToSpawn["color"][1], itemToSpawn["color"][2]), name=itemToSpawn["name"], item=compItem)
 
 	map.objects.append(item)

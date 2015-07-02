@@ -1,0 +1,1601 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Modules &mdash; Nightcaste</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Nightcaste" href="../index.html"/>
+        <link rel="prev" title="Nightcaste 0.3 Alpha Documentation" href="../index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../index.html" class="icon icon-home"> Nightcaste
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-nightcaste">Main Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gvar">Global</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-components">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-charactercreation">Character Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-render">Rendering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mapcreation">Map Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-roomfeatures">Room Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-spawn">Spawn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mechanics">Game Mechanics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-utils">Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Nightcaste</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Modules</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/source/modules.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="modules">
+<h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-nightcaste">
+<span id="main-module"></span><h2>Main Module<a class="headerlink" href="#module-nightcaste" title="Permalink to this headline">¶</a></h2>
+<p>Main Module, consisting of game managing methods, such as creating a new game, saving and loading games and also the main loop.</p>
+<dl class="function">
+<dt id="nightcaste.new_game">
+<code class="descclassname">nightcaste.</code><code class="descname">new_game</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nightcaste.new_game" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Start a new game</div>
+<div class="line">Create a map, FOV Map and print Welcome Mesage</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="nightcaste.next_level">
+<code class="descclassname">nightcaste.</code><code class="descname">next_level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nightcaste.next_level" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Go deeper into the Dungeon.</div>
+<div class="line">Increase the Dungeon Level and create a new map</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="nightcaste.prev_level">
+<code class="descclassname">nightcaste.</code><code class="descname">prev_level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nightcaste.prev_level" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Go upstairs. Load the previous Map from the Map Storage</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="nightcaste.initialize_fov">
+<code class="descclassname">nightcaste.</code><code class="descname">initialize_fov</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nightcaste.initialize_fov" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate FOV and FOH Maps of the Player</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="nightcaste.main_menu">
+<code class="descclassname">nightcaste.</code><code class="descname">main_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nightcaste.main_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the main menu and wait for input</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="nightcaste.play_game">
+<code class="descclassname">nightcaste.</code><code class="descname">play_game</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nightcaste.play_game" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main Loop</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-gvar">
+<span id="global"></span><h2>Global<a class="headerlink" href="#module-gvar" title="Permalink to this headline">¶</a></h2>
+<p>Global Module for global variables:</p>
+<dl class="class">
+<dt id="gvar.Game">
+<em class="property">class </em><code class="descclassname">gvar.</code><code class="descname">Game</code><a class="headerlink" href="#gvar.Game" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Game Instance, consisting of all Information, that will go into the savegame</p>
+<ul class="simple">
+<li>player</li>
+<li>ticks</li>
+<li>map</li>
+<li>world (consisting of all Maps)</li>
+<li>game_msgs</li>
+<li>last_die_rolls</li>
+<li>dungeon_level</li>
+<li>game_state</li>
+<li>objects</li>
+<li>rooms</li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="gvar.Admin">
+<em class="property">class </em><code class="descclassname">gvar.</code><code class="descname">Admin</code><a class="headerlink" href="#gvar.Admin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Admin Object for Debugging Purposes</p>
+<p>If the Admin Menu is enabled, you can access it by pressing F11 ingame.</p>
+<ul class="simple">
+<li><em>light_all</em>  -  Toggle FOV</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="module-components">
+<span id="components"></span><h2>Components<a class="headerlink" href="#module-components" title="Permalink to this headline">¶</a></h2>
+<p>Contains all the Basic components of the game.</p>
+<dl class="class">
+<dt id="components.Object">
+<em class="property">class </em><code class="descclassname">components.</code><code class="descname">Object</code><span class="sig-paren">(</span><em>currentDungeon</em>, <em>currentLevel</em>, <em>x</em>, <em>y</em>, <em>char</em>, <em>id=None</em>, <em>name=''</em>, <em>color=Color(255</em>, <em>255</em>, <em>255)</em>, <em>blocks=False</em>, <em>exp=0</em>, <em>always_visible=False</em>, <em>fighter=None</em>, <em>ai=None</em>, <em>item=None</em>, <em>equipment=None</em>, <em>inventory=[]</em>, <em>use_function=None</em>, <em>args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generic Object, which can have multiple components and become the player, a mob, stairs, loot, etc.</p>
+<dl class="attribute">
+<dt id="components.Object.args">
+<code class="descname">args</code><em class="property"> = None</em><a class="headerlink" href="#components.Object.args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Arguments passed to the use function</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Object.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>dx</em>, <em>dy</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Object.move" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Move current position relatively by the given amount</div>
+</div>
+<div class="line-block">
+<div class="line"><strong>dx &#8211; int</strong> | relative horizontal distance</div>
+<div class="line"><strong>dy &#8211; int</strong> | relative vertical distance</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Object.move_to">
+<code class="descname">move_to</code><span class="sig-paren">(</span><em>spot</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Object.move_to" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Move current position absolutely to the given spot</div>
+</div>
+<div class="line-block">
+<div class="line"><strong>spot</strong> &#8211; tuple | absolute x and y positions</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Object.jump">
+<code class="descname">jump</code><span class="sig-paren">(</span><em>direction</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Object.jump" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Jump to the given direction</div>
+<div class="line">checking for blocked spots and</div>
+<div class="line">stopping if block is found</div>
+</div>
+<div class="line-block">
+<div class="line"><strong>direction</strong> &#8211; tuple | relative x and y directions</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Object.distance_to">
+<code class="descname">distance_to</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Object.distance_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the distance to another object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Object.get_equipped_in_slot">
+<code class="descname">get_equipped_in_slot</code><span class="sig-paren">(</span><em>slot</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Object.get_equipped_in_slot" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the equipment in a slot, or None if it&#8217;s empty</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Object.get_all_equipped">
+<code class="descname">get_all_equipped</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Object.get_all_equipped" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">return all items&#8217;that are equipped to the given entity</div>
+<div class="line">&#64;TODO Enable for mobs</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Object.closest_mob">
+<code class="descname">closest_mob</code><span class="sig-paren">(</span><em>max_range</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Object.closest_mob" title="Permalink to this definition">¶</a></dt>
+<dd><p>find closest enemy, up to a maximum range, and in the player&#8217;s FOV</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Object.use">
+<code class="descname">use</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Object.use" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call the use_function, if it is defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Object.send_to_back">
+<code class="descname">send_to_back</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Object.send_to_back" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make this object be drawn first, so all others appear above it if they&#8217;re in the same tile</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Object.send_to_front">
+<code class="descname">send_to_front</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Object.send_to_front" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make this object be drawn last, so it appears above everything else on its tile</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Object.draw">
+<code class="descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Object.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw this object onto the Map, if it&#8217;s in FOV or always_visible</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Object.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Object.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear this object from the Map, so it won&#8217;t be visible</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="components.Fighter">
+<em class="property">class </em><code class="descclassname">components.</code><code class="descname">Fighter</code><span class="sig-paren">(</span><em>hl=[0, 0, 0, 1], essence=0, strength=1, dexterity=1, stamina=1, perception=1, intelligence=1, wits=1, exp=0, skills={}, death_function=None, bonus={}</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combat related Stats and Methods</p>
+<dl class="method">
+<dt id="components.Fighter.dodgeDV">
+<code class="descname">dodgeDV</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.dodgeDV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns (Essence + DEX + Dodge) / 2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.bashing_soak">
+<code class="descname">bashing_soak</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.bashing_soak" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Iterates through armor slots</div>
+<div class="line">sums up the bashing soak properties,</div>
+<div class="line">adds stamina and then returns it</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.lethal_soak">
+<code class="descname">lethal_soak</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.lethal_soak" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Iterates through armor slots</div>
+<div class="line">sums up the lethal soak properties,</div>
+<div class="line">adds stamina and then returns it</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.hardness">
+<code class="descname">hardness</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.hardness" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Iterates through armor slots</div>
+<div class="line">sums up the hardness properties,</div>
+<div class="line">and then returns it</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.fov">
+<code class="descname">fov</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.fov" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Returns a maximum viewing distance,</div>
+<div class="line">calculated from Perception + (Awareness*2) + Bonuses</div>
+<div class="line">with a minimum of 3</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.foh">
+<code class="descname">foh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.foh" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Returns a maximum hearing distance,</div>
+<div class="line">calculated from Perception + (Awareness*3) + Bonuses</div>
+<div class="line">with a minimum of 3</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.onslaughtPenalty">
+<code class="descname">onslaughtPenalty</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.onslaughtPenalty" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Returns the onslaught Penalty as an integer</div>
+<div class="line">calculated from adjacent enemies - 1</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.take_damage">
+<code class="descname">take_damage</code><span class="sig-paren">(</span><em>damage</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.take_damage" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Apply the given amount of damage</div>
+<div class="line">and invoke the death_function, if necessary</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.attack">
+<code class="descname">attack</code><span class="sig-paren">(</span><em>target</em>, <em>ranged=False</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.attack" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Performs an attack against the target.</div>
+<div class="line">Melee or ranged indicated by ranged boolean</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.ranged_attack">
+<code class="descname">ranged_attack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.ranged_attack" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Perform a ranged attack.</div>
+<div class="line">Checks for a ranged weapon in hand and then calls <em>input.target_tile</em> to determine a target.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.heal">
+<code class="descname">heal</code><span class="sig-paren">(</span><em>amount</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.heal" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Heal by the given amount,</div>
+<div class="line">iterating through the health levels,</div>
+<div class="line">without going over the maximum</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.health_penalty">
+<code class="descname">health_penalty</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.health_penalty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current health penalty</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.join_battle">
+<code class="descname">join_battle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.join_battle" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Decreases the overall tick level.</div>
+<div class="line">Puts owner into global Tick counter</div>
+<div class="line">with join battle roll as Priority</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Fighter.movement_speed">
+<code class="descname">movement_speed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Fighter.movement_speed" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Returns the movement speed</div>
+<div class="line">calculated through 5 - Athletics/2</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="components.MobAI">
+<em class="property">class </em><code class="descclassname">components.</code><code class="descname">MobAI</code><span class="sig-paren">(</span><em>status=None</em>, <em>statusDelta=0</em><span class="sig-paren">)</span><a class="headerlink" href="#components.MobAI" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">AI for NPCs</div>
+<div class="line">Can have different statuses for different behaviour</div>
+<div class="line">StatusDelta is the remaining turns till the status wears off</div>
+</div>
+<dl class="method">
+<dt id="components.MobAI.applyStatus">
+<code class="descname">applyStatus</code><span class="sig-paren">(</span><em>status</em>, <em>rounds</em><span class="sig-paren">)</span><a class="headerlink" href="#components.MobAI.applyStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a new status</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.MobAI.take_turn">
+<code class="descname">take_turn</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.MobAI.take_turn" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Normal Turn Routine</div>
+<div class="line">Mobs take turns if the player can hear it #TODO Change to Mob&#8217;s FOH</div>
+<div class="line">If they&#8217;re close enough, they attack</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="components.Item">
+<em class="property">class </em><code class="descclassname">components.</code><code class="descname">Item</code><span class="sig-paren">(</span><em>use_function=None</em>, <em>args=[]</em>, <em>count=1</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Item" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">An item that can be picked up and used.</div>
+<div class="line">args is a List of Args that are passed to the use_function</div>
+</div>
+<dl class="method">
+<dt id="components.Item.pick_up">
+<code class="descname">pick_up</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Item.pick_up" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Add the item to the player&#8217;s inventory</div>
+<div class="line">&#64;TODO Inventory System for Enemies and other NPCs</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Item.use">
+<code class="descname">use</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Item.use" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">call the use_function, if its defined</div>
+<div class="line">if there are args, add them to the call</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Item.drop">
+<code class="descname">drop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Item.drop" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Drop the Item</div>
+<div class="line">Add it to the Global Objects List</div>
+<div class="line">and set it&#8217;s coordinates to the dropper&#8217;s</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="components.Equipment">
+<em class="property">class </em><code class="descclassname">components.</code><code class="descname">Equipment</code><span class="sig-paren">(</span><em>slot</em>, <em>is_equipped=False</em>, <em>bonus={}</em>, <em>weapon=None</em>, <em>ranged=None</em>, <em>armor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Equipment" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">A component representing equippable objects</div>
+<div class="line">armors, weapons, rings, clothes, etc.</div>
+</div>
+<dl class="method">
+<dt id="components.Equipment.toggle_equip">
+<code class="descname">toggle_equip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Equipment.toggle_equip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equips or Dequips the Equipment</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Equipment.equip">
+<code class="descname">equip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Equipment.equip" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Equips the Equipment</div>
+<div class="line">Dequipping other items in this slot</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="components.Equipment.dequip">
+<code class="descname">dequip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#components.Equipment.dequip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dequips the Equipment</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="components.Weapon">
+<em class="property">class </em><code class="descclassname">components.</code><code class="descname">Weapon</code><span class="sig-paren">(</span><em>accuracy=0</em>, <em>damage=0</em>, <em>damage_type='lethal'</em>, <em>skill='Martial-Arts'</em>, <em>speed=5</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Weapon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component for Weapon stats to be included in Equipment</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="components.Ranged">
+<em class="property">class </em><code class="descclassname">components.</code><code class="descname">Ranged</code><span class="sig-paren">(</span><em>accuracy=0</em>, <em>damage=0</em>, <em>damage_type='lethal'</em>, <em>skill='Archery'</em>, <em>speed=5</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Ranged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component for Ranged Weapon stats to be included in Equipment</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="components.Armor">
+<em class="property">class </em><code class="descclassname">components.</code><code class="descname">Armor</code><span class="sig-paren">(</span><em>bashing_soak=0</em>, <em>lethal_soak=0</em>, <em>fatigue=0</em>, <em>penalty=0</em>, <em>hardness=0</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Armor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component for Armor stats to be included in Equipment</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-charactercreation">
+<span id="character-creation"></span><h2>Character Creation<a class="headerlink" href="#module-charactercreation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="charactercreation.create_character">
+<code class="descclassname">charactercreation.</code><code class="descname">create_character</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#charactercreation.create_character" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Inits the Stats of the player</div>
+<div class="line">and controls menu flow of the character creation process</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="charactercreation.reset_attributes">
+<code class="descclassname">charactercreation.</code><code class="descname">reset_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#charactercreation.reset_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the attributes of the player Object to 1</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="charactercreation.distribute_attributes">
+<code class="descclassname">charactercreation.</code><code class="descname">distribute_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#charactercreation.distribute_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Shows a menu for distributing attribute points</div>
+<div class="line">and continue until attribute points are depleted</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="charactercreation.distribute_skills">
+<code class="descclassname">charactercreation.</code><code class="descname">distribute_skills</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#charactercreation.distribute_skills" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Shows a menu to distribute skill points</div>
+<div class="line">until skill points are depleted</div>
+<div class="line">resetting skill points to prevent cheating</div>
+<div class="line">Not all skills are listed here yet, because not all skills are implemented</div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-render">
+<span id="rendering"></span><h2>Rendering<a class="headerlink" href="#module-render" title="Permalink to this headline">¶</a></h2>
+<p>Rendering and User Input Functions, such as menus and GUI</p>
+<dl class="function">
+<dt id="render.render_all">
+<code class="descclassname">render.</code><code class="descname">render_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#render.render_all" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Main rendering method.</div>
+<div class="line">Recomputes the FOV.</div>
+<div class="line">Renders the map and all objects.</div>
+<div class="line">Then blits all to the main console.</div>
+<div class="line">Also Renders the GUI to gvar.panel </div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="render.message">
+<code class="descclassname">render.</code><code class="descname">message</code><span class="sig-paren">(</span><em>new_msg</em>, <em>color=Color(255</em>, <em>255</em>, <em>255)</em><span class="sig-paren">)</span><a class="headerlink" href="#render.message" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Show a message in the message log</div>
+<div class="line">split the message if necessary, among multiple lines </div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="render.render_messages">
+<code class="descclassname">render.</code><code class="descname">render_messages</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#render.render_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render Game messages, with fading color</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="render.render_health_levels">
+<code class="descclassname">render.</code><code class="descname">render_health_levels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#render.render_health_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders the player&#8217;s health levels at a fixed position</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="render.render_dice_rolls">
+<code class="descclassname">render.</code><code class="descname">render_dice_rolls</code><span class="sig-paren">(</span><em>y</em>, <em>roll</em><span class="sig-paren">)</span><a class="headerlink" href="#render.render_dice_rolls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders the last Die rolls the player has made.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="render.render_bar">
+<code class="descclassname">render.</code><code class="descname">render_bar</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>total_width</em>, <em>name</em>, <em>value</em>, <em>maximum</em>, <em>bar_color</em>, <em>back_color</em><span class="sig-paren">)</span><a class="headerlink" href="#render.render_bar" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Renders a bar (HP, experience, etc)</div>
+<div class="line">Not currently used, but could be used in the future again </div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="render.menu_supplement">
+<code class="descclassname">render.</code><code class="descname">menu_supplement</code><span class="sig-paren">(</span><em>text</em>, <em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#render.menu_supplement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a text at the given position to the menu, not overwriting anything.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="render.menu">
+<code class="descclassname">render.</code><code class="descname">menu</code><span class="sig-paren">(</span><em>header</em>, <em>options</em>, <em>width</em>, <em>color=None</em>, <em>text_color=Color(255</em>, <em>255</em>, <em>255)</em>, <em>alpha=1</em>, <em>center=False</em>, <em>additional_line=0</em>, <em>option_descriptions=None</em>, <em>flush=True</em><span class="sig-paren">)</span><a class="headerlink" href="#render.menu" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Render a Full-Screen menu, overwriting the console.</div>
+<div class="line">&#64;TODO Add multi-page support </div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="render.inventory_menu">
+<code class="descclassname">render.</code><code class="descname">inventory_menu</code><span class="sig-paren">(</span><em>header</em><span class="sig-paren">)</span><a class="headerlink" href="#render.inventory_menu" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Show a menu with each item of the inventory as an option,</div>
+<div class="line">separating equipped items from others.</div>
+<div class="line">Derives from menu() </div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="render.stat_menu">
+<code class="descclassname">render.</code><code class="descname">stat_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#render.stat_menu" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Shows a menu displaying the Player&#8217;s Stats and a possibility to distribute EXP Points.</div>
+<div class="line">Derives from menu() </div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="render.admin_menu">
+<code class="descclassname">render.</code><code class="descname">admin_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#render.admin_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows an admin menu fpr debugging purposes</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-input">
+<span id="input"></span><h2>Input<a class="headerlink" href="#module-input" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="input.handle_keys">
+<code class="descclassname">input.</code><code class="descname">handle_keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#input.handle_keys" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">The player&#8217;s main input method</div>
+<div class="line">Returns a speed value as an integer</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="input.target_tile">
+<code class="descclassname">input.</code><code class="descname">target_tile</code><span class="sig-paren">(</span><em>max_range=None</em>, <em>radius=0</em><span class="sig-paren">)</span><a class="headerlink" href="#input.target_tile" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Target a distant tile</div>
+<div class="line">For Ranged Attacks, like Archery, Thrown</div>
+<div class="line">Also Fireballs or similar projectiles with Radius</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="input.target_adjacent">
+<code class="descclassname">input.</code><code class="descname">target_adjacent</code><span class="sig-paren">(</span><em>relative=False</em><span class="sig-paren">)</span><a class="headerlink" href="#input.target_adjacent" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Target an adjacent tile,</div>
+<div class="line">e.g. for using doors</div>
+<div class="line">Returns absolute coordinates</div>
+<div class="line">or the relative direction, if relative flag is set</div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mapcreation">
+<span id="map-creation"></span><h2>Map Creation<a class="headerlink" href="#module-mapcreation" title="Permalink to this headline">¶</a></h2>
+<p>Module for Map Creation.</p>
+<p>Using Binary Space Partitioning for creating randomized Room Layouts.</p>
+<dl class="class">
+<dt id="mapcreation.Tile">
+<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">Tile</code><span class="sig-paren">(</span><em>blocked=True</em>, <em>char='#'</em>, <em>ai_blocked=False</em>, <em>block_sight=None</em>, <em>tile_type='wall'</em>, <em>use_function=None</em>, <em>step_function=None</em>, <em>color=Color(255</em>, <em>255</em>, <em>255)</em>, <em>weight=0</em>, <em>args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Tile" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Tile of the map, to be included in gvar.game.map</p>
+<dl class="attribute">
+<dt id="mapcreation.Tile.blocked">
+<code class="descname">blocked</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Tile.blocked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is the tile passable</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Tile.ai_blocked">
+<code class="descname">ai_blocked</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Tile.ai_blocked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will the AI pass this tile or go around it</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Tile.char">
+<code class="descname">char</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Tile.char" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Character to be rendered for this tile</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Tile.color">
+<code class="descname">color</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Tile.color" title="Permalink to this definition">¶</a></dt>
+<dd><p>The color in which the character will be rendered</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Tile.explored">
+<code class="descname">explored</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Tile.explored" title="Permalink to this definition">¶</a></dt>
+<dd><p>Has the player explored it already; False by default</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Tile.use_function">
+<code class="descname">use_function</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Tile.use_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to be executed when the player uses the tile (e.g. open_door)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Tile.step_function">
+<code class="descname">step_function</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Tile.step_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to be executed when the player steps on the tile (e.g. fall_down)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Tile.tile_type">
+<code class="descname">tile_type</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Tile.tile_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string indicating the type (wall, floor, door, hole, etc.)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Tile.weight">
+<code class="descname">weight</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Tile.weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weight for Pathfinding. The higher the weight, the more a step through this tile will &#8220;cost&#8221; leading to mobs going around this tile</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Tile.args">
+<code class="descname">args</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Tile.args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Arguments for passing into the use_function</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Tile.block_sight">
+<code class="descname">block_sight</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Tile.block_sight" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, if a tile is blocked, it also blocks sight</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Tile.use">
+<code class="descname">use</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Tile.use" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call the use_function, if it is defined.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mapcreation.Rect">
+<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">Rect</code><span class="sig-paren">(</span><em>map</em>, <em>x</em>, <em>y</em>, <em>w</em>, <em>h</em>, <em>id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Rectangle used for creating rooms on the map</p>
+<dl class="attribute">
+<dt id="mapcreation.Rect.x1">
+<code class="descname">x1</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Rect.x1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Left X-Axis Boundary</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Rect.y1">
+<code class="descname">y1</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Rect.y1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Top Y-Axis Boundary</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Rect.w">
+<code class="descname">w</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Rect.w" title="Permalink to this definition">¶</a></dt>
+<dd><p>Width</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Rect.h">
+<code class="descname">h</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Rect.h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Height</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Rect.x2">
+<code class="descname">x2</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Rect.x2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Right X-Axis Boundary</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Rect.y2">
+<code class="descname">y2</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Rect.y2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bottom Y-Axis Boundary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Rect.get_corners">
+<code class="descname">get_corners</code><span class="sig-paren">(</span><em>radius=0</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Rect.get_corners" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Returns an array of the corners of the room.</div>
+<div class="line">If radius is set, returns round areas around the corners</div>
+<div class="line">only with unblocked tiles</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Rect.get_area">
+<code class="descname">get_area</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Rect.get_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an array containing all Tiles inside the room</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Rect.random_spot">
+<code class="descname">random_spot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Rect.random_spot" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets a random tile in a Rect instance</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Rect.center">
+<code class="descname">center</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Rect.center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the coordinates of the center of this room, as a tuple</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Rect.intersect">
+<code class="descname">intersect</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Rect.intersect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boolean value, if this room intersects with another one</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Rect.get_exits">
+<code class="descname">get_exits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Rect.get_exits" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Returns an array of tuples</div>
+<div class="line">containing the tiles leading into/out of the room</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mapcreation.Circle">
+<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">Circle</code><span class="sig-paren">(</span><em>x0</em>, <em>y0</em>, <em>r</em>, <em>filled=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Circle" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">A Circle on the map, generated by supplying center coordinates and the radius.</div>
+<div class="line">The circle can be filled, with the filled-Flag.</div>
+<div class="line">Used e.g. for splash radii</div>
+</div>
+<dl class="attribute">
+<dt id="mapcreation.Circle.x0">
+<code class="descname">x0</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Circle.x0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Center X-Coordinate</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Circle.y0">
+<code class="descname">y0</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Circle.y0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Center Y-Coordinate</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Circle.r">
+<code class="descname">r</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Circle.r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radius</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mapcreation.Circle.circle">
+<code class="descname">circle</code><em class="property"> = None</em><a class="headerlink" href="#mapcreation.Circle.circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array containing the coordinates of all tiles in the circle</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mapcreation.World">
+<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">World</code><span class="sig-paren">(</span><em>worldspace</em>, <em>dungeons=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.World" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">The World Objects contains all Dungeons (and other Map Collections, like the Worldspace)</div>
+<div class="line">It has utilities for generating random Dungeons and Scenarios, as well.</div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="mapcreation.Dungeon">
+<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">Dungeon</code><span class="sig-paren">(</span><em>id=None</em>, <em>maps=None</em>, <em>depth=1</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Dungeon" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">A Collection of maps representing a Dungeon with multiple levels.</div>
+</div>
+<div class="line-block">
+<div class="line"><strong>id</strong> is a randomly generated string of length 8, if not specified.</div>
+<div class="line"><strong>maps</strong> is an array of the maps</div>
+<div class="line"><strong>depth</strong> is the maximum depth of the dungeon, to determine if stairs need to be spawned. Defaults to 1.</div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="mapcreation.Map">
+<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">Map</code><span class="sig-paren">(</span><em>id=None</em>, <em>map=None</em>, <em>rooms=None</em>, <em>objects=None</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">A map object, part of a Dungeon.</div>
+</div>
+<div class="line-block">
+<div class="line"><strong>map</strong> is the two-dimensional array of Tiles, the map itself</div>
+<div class="line"><strong>rooms</strong> is an array of Rect instances, representing the rooms</div>
+<div class="line"><strong>tree</strong> is the BSP tree used to generate the map</div>
+<div class="line"><strong>objects</strong> contains all objects (Items, Mobs) in the map</div>
+<div class="line">A map also has a <strong>owner</strong> attribute, which is the Dungeon()-Instance containing the map</div>
+<div class="line">The <strong>owner</strong> has to be set from outside when initializing the map</div>
+<div class="line"><strong>upstairs</strong> and <strong>downstairs</strong> are wuick references to the up- and downstairs objects in the objects array</div>
+</div>
+<dl class="attribute">
+<dt id="mapcreation.Map.level">
+<code class="descname">level</code><a class="headerlink" href="#mapcreation.Map.level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the level of this map in the owning dungeon</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.create_worldspace">
+<code class="descname">create_worldspace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.create_worldspace" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Creates a randomly generated outdoor-scenario</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.create_dungeon">
+<code class="descname">create_dungeon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.create_dungeon" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Creates a random map</div>
+</div>
+<div class="line-block">
+<div class="line">First, fills the map with walls.</div>
+<div class="line">Creates a BSP (Binary Space Partitioning) Tree and traverses it, creating a randomly-sized room for every node.</div>
+<div class="line">50 % chance to spawn a random room feature, such as holes in the floor or columns.</div>
+<div class="line">Spawns the player on a random unblocked spot.</div>
+<div class="line">Then, calls <em>spawn_stuff()</em> to spawn mobs, items and the stairs</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.unblocked_spot_in">
+<code class="descname">unblocked_spot_in</code><span class="sig-paren">(</span><em>radius</em>, <em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.unblocked_spot_in" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">returns an unblocked tile within a given radius</div>
+<div class="line">increase the radius if no unblocked spot is found</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.in_boundaries">
+<code class="descname">in_boundaries</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.in_boundaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boolean, indicating if the given spot is within the map boundaries</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.is_blocked">
+<code class="descname">is_blocked</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>ai=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.is_blocked" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">check if a map tile is blocked</div>
+<div class="line">or if it&#8217;s blocked for the AI (Holes, Traps, etc.)</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.adjacent">
+<code class="descname">adjacent</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>tile_type=None</em>, <em>diagonal=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.adjacent" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">return an array of all adjacent tiles</div>
+<div class="line">or an array of all adjacent tiles with given tile_type</div>
+<div class="line">If the diagonal Flag is set to False, returns only non-diagonal Tiles</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.adjacent_ai_unblocked">
+<code class="descname">adjacent_ai_unblocked</code><span class="sig-paren">(</span><em>spot</em>, <em>exception=None</em>, <em>ignore_ai_blocks=False</em>, <em>ignore_types=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.adjacent_ai_unblocked" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">returns an array of all adjacent tiles as tuples</div>
+<div class="line">if an exception is set, blocking check wont be executed for the given spot</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.random_room">
+<code class="descname">random_room</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.random_room" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a random room in this map</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.set_door">
+<code class="descname">set_door</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.set_door" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a door on the given position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.set_floor">
+<code class="descname">set_floor</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.set_floor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates floor on the given position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.set_wall">
+<code class="descname">set_wall</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.set_wall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a wall on the given position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.set_hole">
+<code class="descname">set_hole</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.set_hole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a hole on the given position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.create_room">
+<code class="descname">create_room</code><span class="sig-paren">(</span><em>room</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.create_room" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over the tiles in the given room and creates floor in it, using set_floor method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.corridor">
+<code class="descname">corridor</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.corridor" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Builds a corridor between the left and right children of the given node.</div>
+<div class="line">The corridor is Z-shaped, only horizontally and vertically.</div>
+<div class="line">The order of h / v corridors is randomly set (50/50).</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.create_h_corridor">
+<code class="descname">create_h_corridor</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.create_h_corridor" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Create a horizontal tunnel from <strong>x1</strong> to <strong>x2</strong> on <strong>y</strong>.</div>
+<div class="line">Checks for surrounding tiles when entering another room and creates a door with a certain probability.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.create_v_corridor">
+<code class="descname">create_v_corridor</code><span class="sig-paren">(</span><em>y1</em>, <em>y2</em>, <em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.create_v_corridor" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Create a vertical tunnel from <strong>y1</strong> to <strong>y2</strong> on <strong>x</strong>.</div>
+<div class="line">Checks for surrounding tiles when entering another room and creates a door with a certain probability.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.process_node">
+<code class="descname">process_node</code><span class="sig-paren">(</span><em>node</em>, <em>userData</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.process_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes a BSP node.</p>
+<div class="line-block">
+<div class="line">Creates a room, if the node is a leaf and then smoothes its corners.</div>
+<div class="line">If the node is not a leaf, connect the child nodes with a corridor</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.random_spot_in_node">
+<code class="descname">random_spot_in_node</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.random_spot_in_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a randomly selected floor inside the given node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.randomize_tiles">
+<code class="descname">randomize_tiles</code><span class="sig-paren">(</span><em>area</em>, <em>positive_function</em>, <em>negative_function</em>, <em>positive_percentage</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.randomize_tiles" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Randomizes the tiles inside the given area <em>(array of positions)</em>.</div>
+<div class="line">If a random value is greater than the given positive_percentage,</div>
+<div class="line">calls the positive function with x and y position of the positions</div>
+<div class="line">as arguments. If its less, calls negative_function.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.smooth_room_corners">
+<code class="descname">smooth_room_corners</code><span class="sig-paren">(</span><em>room</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.smooth_room_corners" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Randomizes the tiles of the corners of the room and sets them either to wall or to floor.</div>
+<div class="line">The Corner radius depends on the size of the room.</div>
+<div class="line">Then, calls ca_smooth to smooth out the tiles and create a more natural look.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.ca_smooth">
+<code class="descname">ca_smooth</code><span class="sig-paren">(</span><em>area</em>, <em>positive_type</em>, <em>positive_function</em>, <em>negative_function</em>, <em>ratio</em>, <em>iterations=1</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.ca_smooth" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">smoothes out the tiles of the room</div>
+<div class="line">by applying a cellular automaton</div>
+<div class="line">ratio is a tuple for the cellular automaton rule</div>
+<div class="line">e.g. (4, 5)</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.restore_accessibility">
+<code class="descname">restore_accessibility</code><span class="sig-paren">(</span><em>room</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.restore_accessibility" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Checks, if every exit of the given room is reachable from the other exits.</div>
+<div class="line">If one exit is not reachable from the other, builds a bridge between the two.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mapcreation.Map.is_reachable">
+<code class="descname">is_reachable</code><span class="sig-paren">(</span><em>start</em>, <em>end</em>, <em>crossborder=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.is_reachable" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">perform an a-star search from start to end</div>
+<div class="line">and return Boolean, if end was reached</div>
+</div>
+<div class="line-block">
+<div class="line">If the crossborder flag is set, it performs 15 searches from random spots on the map,</div>
+<div class="line">which doesn&#8217;t guarantee reachability, but the probability of non-reachability is sufficiently low</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-roomfeatures">
+<span id="room-features"></span><h2>Room Features<a class="headerlink" href="#module-roomfeatures" title="Permalink to this headline">¶</a></h2>
+<p>Spezialized Map features that are distributed randomly among the map&#8217;s rooms.</p>
+<dl class="function">
+<dt id="roomfeatures.random_roomfeature">
+<code class="descclassname">roomfeatures.</code><code class="descname">random_roomfeature</code><span class="sig-paren">(</span><em>map</em>, <em>room</em><span class="sig-paren">)</span><a class="headerlink" href="#roomfeatures.random_roomfeature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chooses a random feature from a given list to be spawned in the given room.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="roomfeatures.column_rows">
+<code class="descclassname">roomfeatures.</code><code class="descname">column_rows</code><span class="sig-paren">(</span><em>map</em>, <em>room</em><span class="sig-paren">)</span><a class="headerlink" href="#roomfeatures.column_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawn 2 rows of Columns in the room</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="roomfeatures.floor_holes">
+<code class="descclassname">roomfeatures.</code><code class="descname">floor_holes</code><span class="sig-paren">(</span><em>map</em>, <em>room</em><span class="sig-paren">)</span><a class="headerlink" href="#roomfeatures.floor_holes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holes in the floor, maintaining accessibility</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-spawn">
+<span id="spawn"></span><h2>Spawn<a class="headerlink" href="#module-spawn" title="Permalink to this headline">¶</a></h2>
+<p>Methods for spawning Items, Mobs and other Entities</p>
+<dl class="function">
+<dt id="spawn.load_mob_db">
+<code class="descclassname">spawn.</code><code class="descname">load_mob_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spawn.load_mob_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the Mob DB from mobs.json</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="spawn.load_item_db">
+<code class="descclassname">spawn.</code><code class="descname">load_item_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spawn.load_item_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the Item DB from items.json</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="spawn.spawn_stuff">
+<code class="descclassname">spawn.</code><code class="descname">spawn_stuff</code><span class="sig-paren">(</span><em>map</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.spawn_stuff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forwarding function for spawning stairs, mobs and items</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="spawn.spawn_player">
+<code class="descclassname">spawn.</code><code class="descname">spawn_player</code><span class="sig-paren">(</span><em>array_dungeon_level</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.spawn_player" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Spawns the player on an unblocked spot in the given level of the given dungeon, or, if the level has upstairs,</div>
+<div class="line">spawns the player at the upstairs&#8217; position</div>
+<div class="line">Also it invokes the generation of a new random map, if the next level isn&#8217;t yet defined.</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="spawn.spawn_entrance">
+<code class="descclassname">spawn.</code><code class="descname">spawn_entrance</code><span class="sig-paren">(</span><em>map</em>, <em>x=None</em>, <em>y=None</em>, <em>dungeon=None</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.spawn_entrance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawns the entrance to a dungeon. If dungeon is not set, a randomly generated will be used.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="spawn.spawn_upstairs">
+<code class="descclassname">spawn.</code><code class="descname">spawn_upstairs</code><span class="sig-paren">(</span><em>map</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.spawn_upstairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawns the stairs to the previous level, or to the worldspace, if it&#8217;s the first level</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="spawn.spawn_downstairs">
+<code class="descclassname">spawn.</code><code class="descname">spawn_downstairs</code><span class="sig-paren">(</span><em>map</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.spawn_downstairs" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Spawns the stairs to the next level</div>
+<div class="line">Guarantees that it is rechable from the upstairs position</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="spawn.spawn_mobs">
+<code class="descclassname">spawn.</code><code class="descname">spawn_mobs</code><span class="sig-paren">(</span><em>map</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.spawn_mobs" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Spawns randomly distributed mobs. Mobs spawn in packs.</div>
+<div class="line">The count and type of mobs is determined by the dungeon level.</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="spawn.spawn_items">
+<code class="descclassname">spawn.</code><code class="descname">spawn_items</code><span class="sig-paren">(</span><em>map</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.spawn_items" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Spawns randomly selected Items from Item DB.</div>
+<div class="line">The count and type of the items is determined by the dungeon level.</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="spawn.place_mob_pack">
+<code class="descclassname">spawn.</code><code class="descname">place_mob_pack</code><span class="sig-paren">(</span><em>map</em>, <em>x</em>, <em>y</em>, <em>mobToSpawn</em>, <em>packsize</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.place_mob_pack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Places a pack of mobs at the given position.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="spawn.place_item">
+<code class="descclassname">spawn.</code><code class="descname">place_item</code><span class="sig-paren">(</span><em>map</em>, <em>x</em>, <em>y</em>, <em>itemToSpawn</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.place_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Places a usable item at the given position</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="spawn.place_equipment">
+<code class="descclassname">spawn.</code><code class="descname">place_equipment</code><span class="sig-paren">(</span><em>map</em>, <em>x</em>, <em>y</em>, <em>itemToSpawn</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.place_equipment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Places a piece of equipment, that can be picked up, at the given position</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="spawn.chances">
+<code class="descclassname">spawn.</code><code class="descname">chances</code><span class="sig-paren">(</span><em>level</em>, <em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.chances" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Returns an integer representing the count of mobs/items that will be spawned,</div>
+<div class="line">by applying different functions, depending on dungeon_level and mob level.</div>
+<div class="line"><a class="reference external" href="http://fooplot.com/plot/1nydnisrci">http://fooplot.com/plot/1nydnisrci</a></div>
+<div class="line">x = dungeon level</div>
+<div class="line">level = mob/item level</div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mechanics">
+<span id="game-mechanics"></span><h2>Game Mechanics<a class="headerlink" href="#module-mechanics" title="Permalink to this headline">¶</a></h2>
+<p>Game mechanics, such as Attacks, Death, Spells, Step functions</p>
+<dl class="function">
+<dt id="mechanics.player_move_or_attack">
+<code class="descclassname">mechanics.</code><code class="descname">player_move_or_attack</code><span class="sig-paren">(</span><em>dx</em>, <em>dy</em><span class="sig-paren">)</span><a class="headerlink" href="#mechanics.player_move_or_attack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move the player to the given direction. If a mob is found there, attack it.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mechanics.open_door">
+<code class="descclassname">mechanics.</code><code class="descname">open_door</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#mechanics.open_door" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Use function:</div>
+<div class="line">Open the door. Set the Character to &#8216;/&#8217;, tile_type to &#8216;door&#8217; and do not block or block_sight.</div>
+<div class="line">Also, checks direct adjacent (not diagonal) tiles for doors, and opens them too. (As if they were double doors.)</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mechanics.fall_into">
+<code class="descclassname">mechanics.</code><code class="descname">fall_into</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="headerlink" href="#mechanics.fall_into" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Step function:</div>
+<div class="line">Fall into a hole. Takes an entity (player, mob) as input.</div>
+<div class="line">Rolls Wits + Awareness to determine, if they see the hole.</div>
+<div class="line">If they do and there is a ledge near (not diagonally), do a reflexive Wits+Awareness roll, to determine if they can hang down the ledge.</div>
+<div class="line">Otherwise, kill them.</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mechanics.player_death">
+<code class="descclassname">mechanics.</code><code class="descname">player_death</code><span class="sig-paren">(</span><em>player</em><span class="sig-paren">)</span><a class="headerlink" href="#mechanics.player_death" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Death function for the player.</div>
+<div class="line">Set game state to &#8216;dead&#8217; and turn the player into a corpse.</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mechanics.mob_death">
+<code class="descclassname">mechanics.</code><code class="descname">mob_death</code><span class="sig-paren">(</span><em>mob</em><span class="sig-paren">)</span><a class="headerlink" href="#mechanics.mob_death" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Death function for mobs.</div>
+<div class="line">Turns the mob into a corpse. It doesn&#8217;t block, has no AI and Fighter components.</div>
+<div class="line">Also, add the mob&#8217;s EXP value to the player&#8217;s.</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mechanics.cast_heal">
+<code class="descclassname">mechanics.</code><code class="descname">cast_heal</code><span class="sig-paren">(</span><em>min</em>, <em>max</em>, <em>mutableBySkill=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mechanics.cast_heal" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Spells and Effects: Heal player</strong></div>
+<div class="line">Heal the player by a random value between <em>min</em> and <em>max</em> boundaries.</div>
+<div class="line">If <em>mutableBySkill</em> is true, the player&#8217;s Medicine skill adds to the boundaries.</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mechanics.cast_lightning">
+<code class="descclassname">mechanics.</code><code class="descname">cast_lightning</code><span class="sig-paren">(</span><em>min</em>, <em>max</em><span class="sig-paren">)</span><a class="headerlink" href="#mechanics.cast_lightning" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Spells and Effects: Lightning</strong></div>
+<div class="line">Cast a lightning and deal a random amount of Lethal damage inside the given <em>min</em> and <em>max</em> boundaries.</div>
+<div class="line">The target is the closest mob inside a radius of 5 fields.</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mechanics.cast_confusion">
+<code class="descclassname">mechanics.</code><code class="descname">cast_confusion</code><span class="sig-paren">(</span><em>min</em>, <em>max</em><span class="sig-paren">)</span><a class="headerlink" href="#mechanics.cast_confusion" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Spells and Effects: Confusion</strong></div>
+<div class="line">Apply a &#8216;confusion&#8217; status to the closes mob within 5 fields.</div>
+<div class="line">A confused enemy moves into a random direction every time it takes a turn.</div>
+<div class="line">Also, it doesn&#8217;t react to ai_blocked tiles, so it can fall down a hole.</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mechanics.cast_fireball">
+<code class="descclassname">mechanics.</code><code class="descname">cast_fireball</code><span class="sig-paren">(</span><em>min</em>, <em>max</em>, <em>explosion_radius=2</em><span class="sig-paren">)</span><a class="headerlink" href="#mechanics.cast_fireball" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Spells and Effects: Fireball.</strong></div>
+<div class="line">Target a tile within the FOV with and cast a fireball with given explosion <em>radius</em> onto the targeted tile.</div>
+<div class="line">Deal damage equal to a random value inside the <em>min</em> and <em>max</em> boundaries.</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mechanics.distribute_exp">
+<code class="descclassname">mechanics.</code><code class="descname">distribute_exp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mechanics.distribute_exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a menu in which the player can distribute the EXP he acquired.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-utils">
+<span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-utils" title="Permalink to this headline">¶</a></h2>
+<p>Utility Methods used in different contexts and therefore need to be centrally available</p>
+<dl class="function">
+<dt id="utils.d10">
+<code class="descclassname">utils.</code><code class="descname">d10</code><span class="sig-paren">(</span><em>count</em>, <em>label</em>, <em>botchable=True</em>, <em>player=False</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.d10" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">rolls x d10s and returns [successes, [die, die, die ...]].</div>
+<div class="line">Publishes the roll result to the dice feed, if it was the player&#8217;s roll.</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.decrease_tick_level">
+<code class="descclassname">utils.</code><code class="descname">decrease_tick_level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utils.decrease_tick_level" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Extracts all actors from the global Tick Counter</div>
+<div class="line">and reappends them, decreasing the overall</div>
+<div class="line">level, so that the lowest is 0</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.is_player">
+<code class="descclassname">utils.</code><code class="descname">is_player</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.is_player" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boolean, indicating if the given entitiy is the player</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.applyBonus">
+<code class="descclassname">utils.</code><code class="descname">applyBonus</code><span class="sig-paren">(</span><em>attribute</em>, <em>amount</em>, <em>fighter</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.applyBonus" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Apply a new bonus to fighter,</div>
+<div class="line">preserving the existing bonus</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.revertBonus">
+<code class="descclassname">utils.</code><code class="descname">revertBonus</code><span class="sig-paren">(</span><em>attribute</em>, <em>amount</em>, <em>fighter</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.revertBonus" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Iterate through bonus array</div>
+<div class="line">and remove the given amount, if found</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.calcBonuses">
+<code class="descclassname">utils.</code><code class="descname">calcBonuses</code><span class="sig-paren">(</span><em>attribute</em>, <em>fighter</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.calcBonuses" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Sum up all Boni that apply from equipment</div>
+<div class="line">only for the given attribute</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.rotate90deg">
+<code class="descclassname">utils.</code><code class="descname">rotate90deg</code><span class="sig-paren">(</span><em>point</em>, <em>origin</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.rotate90deg" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">rotates point around origin and</div>
+<div class="line">returns an array of points rotated 90deg and -90deg</div>
+<div class="line">only for orthogonal points</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.is_double_door">
+<code class="descclassname">utils.</code><code class="descname">is_double_door</code><span class="sig-paren">(</span><em>map</em>, <em>point1</em>, <em>point2</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.is_double_door" title="Permalink to this definition">¶</a></dt>
+<dd><p>forwarder to check if two points are a double door in both directions</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.double_door_check">
+<code class="descclassname">utils.</code><code class="descname">double_door_check</code><span class="sig-paren">(</span><em>map</em>, <em>point1</em>, <em>point2</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.double_door_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if the two points are a double door</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.sort_inventory">
+<code class="descclassname">utils.</code><code class="descname">sort_inventory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utils.sort_inventory" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Sort the inventory, putting all equipped items on top</div>
+<div class="line">and grouping items together</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.interval_on_range">
+<code class="descclassname">utils.</code><code class="descname">interval_on_range</code><span class="sig-paren">(</span><em>stretch</em>, <em>delta</em>, <em>pad</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.interval_on_range" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">returns an array of spots along a stretch, evenly distributed</div>
+<div class="line">with interval of delta and a left/right padding</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.get_distance">
+<code class="descclassname">utils.</code><code class="descname">get_distance</code><span class="sig-paren">(</span><em>start</em>, <em>destination</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.get_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates the euclidean distance between two points</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.fov_distance_coef">
+<code class="descclassname">utils.</code><code class="descname">fov_distance_coef</code><span class="sig-paren">(</span><em>spot</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.fov_distance_coef" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">returns a value between 0.3 and 1</div>
+<div class="line">depending on the distance between spot and the player&#8217;s position</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.is_visible">
+<code class="descclassname">utils.</code><code class="descname">is_visible</code><span class="sig-paren">(</span><em>(x</em>, <em>y)</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.is_visible" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">returns a boolean value, if the given spot is inside the circular fov field of the player </div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="utils.PriorityQueue">
+<em class="property">class </em><code class="descclassname">utils.</code><code class="descname">PriorityQueue</code><a class="headerlink" href="#utils.PriorityQueue" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Priority Queue using Heaps</div>
+<div class="line">for A*-Search</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.heuristic">
+<code class="descclassname">utils.</code><code class="descname">heuristic</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.heuristic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manhattan Heuristic for A*-Search</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.a_star_search">
+<code class="descclassname">utils.</code><code class="descname">a_star_search</code><span class="sig-paren">(</span><em>map</em>, <em>start</em>, <em>goal</em>, <em>ignore_ai_blocks=False</em>, <em>ignore_types=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.a_star_search" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">A* Search algorithm</div>
+<div class="line">Thanks to Redblobgames, based off:</div>
+<div class="line"><a class="reference external" href="http://www.redblobgames.com/pathfinding/a-star/implementation.html">http://www.redblobgames.com/pathfinding/a-star/implementation.html</a></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="Nightcaste 0.3 Alpha Documentation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Nicas Kilian Heydorn.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

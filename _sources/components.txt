@@ -1,0 +1,663 @@
+import libtcodpy as libtcod
+import glob
+import math
+from utils import calcBonuses
+
+class Object:
+	""" Generic Object, which can have multiple components and become the player, a mob, stairs, loot, etc. """
+
+	def __init__(self, x, y, char, name='', color=libtcod.white, blocks=False, exp=0, always_visible=False, fighter=None, ai=None, item=None, equipment=None, inventory=[]):
+		self.x = x
+		self.y = y
+		self.char = char
+		self.color = color
+		self.name = name
+		self.blocks = blocks # boolean - if others can pass through
+		self.always_visible = always_visible # boolean - if this object should be drawn regardless of FOV, when explored
+		self.exp = exp # int - exp given to the player once explored, killed, etc.
+		self.inventory = inventory # list - inventory of the player, the mob, a corpse or a treasure chest, etc.
+
+		# Fighter Component
+		# Has all values and methods used for combat
+		self.fighter = fighter
+		if self.fighter:
+			self.fighter.owner = self
+
+		# MobAI Component
+		# Handles NPC actions
+		self.ai = ai
+		if self.ai:
+			self.ai.owner = self
+
+		# Item Component
+		# Handles Pick up and Use Functions of Items
+		# Note that Equipment stats and others are in the Equipment Component, not here
+		self.item = item
+		if self.item:
+			self.item.owner = self
+
+		# Equipment Component
+		# An Equipment item, which can have Weapon, Armor or Ranged Components
+		self.equipment = equipment
+		if self.equipment:
+			self.item = Item()
+			self.item.owner = self
+			self.equipment.owner = self
+
+
+
+	def move(self, dx, dy):
+		"""	function:: move(self, dx, dy)
+			Move current position relatively by the given amount
+
+			dx -- int | relative horizontal distance
+			dy -- int | relative vertical distance
+		"""
+		from utils import is_blocked
+
+		if not is_blocked(self.x + dx, self.y + dy):
+			self.x += dx
+			self.y += dy
+			if gvar.game.map[self.x][self.y].step_function is not None:
+				gvar.game.map[self.x][self.y].step_function(self)
+
+
+
+	def move_to(self, spot):
+		""" Move current position absolutely to the given spot
+
+			spot -- tuple | absolute x and y positions
+		"""
+		from utils import is_blocked, is_player
+
+		if not is_blocked(spot[0], spot[1]):
+			self.x = spot[0]
+			self.y = spot[1]
+
+
+
+	def jump(self, direction):
+		""" Jump to the given direction
+			checking for blocked spots and
+			stopping if block is found
+
+			direction -- tuple | relative x and y directions
+		"""
+		from utils import d10, is_blocked, is_player
+
+		# Roll DEX + Athletics
+		roll = d10(self.fighter.dexterity + self.fighter.skills["Athletics"], 'Jump', player=is_player(self))
+
+		# Normalize directions
+		for d in directions:
+			if d > 0:
+				d = 1
+			elif d < 0:
+				d = -1
+
+		#Check for blocking Objects/Tiles
+		max_distance = 0
+		if roll[0] != 'botch':
+			for d in range(1, roll[0]):
+				max_distance = d
+				if is_blocked(self.x + direction[0] * (d+1), self.y + direction[1] * (d+1)):
+					break
+			self.move_to((self.x + direction[0]*max_distance, self.y + direction[1]*max_distance))
+		else:
+			#TODO Botch Behaviour
+			print "botch"
+
+		return self.fighter.movement_speed()
+
+
+
+	def distance_to(self, other):
+		""" Returns the distance to another object """
+		from utils import get_distance
+
+		return get_distance((self.x, self.y), (other.x, other.y))
+
+
+
+	def send_to_back(self):
+		""" Make this object be drawn first, so all others appear above it if they're in the same tile """
+		gvar.game.objects.remove(self)
+		gvar.game.objects.insert(0, self)
+
+	def send_to_front(self):
+		""" Make this object be drawn last, so it appears above everything else on its tile """
+		gvar.game.objects.remove(self)
+		gvar.game.objects.append(self)
+
+	def draw(self):
+		""" Draw this object onto the Map, if it's in FOV or always_visible """
+		from utils import fov_distance_coef
+
+		if (libtcod.map_is_in_fov(gvar.fov_map, self.x, self.y)) or (self.always_visible and gvar.game.map[self.x][self.y].explored) or gvar.admin.light_all:
+			libtcod.console_put_char_ex(gvar.con, self.x, self.y, self.char, self.color * fov_distance_coef((self.x, self.y)), libtcod.BKGND_SET)
+
+	def clear(self):
+		""" Clear this object from the Map, so it won't be visible """
+		libtcod.console_put_char(gvar.con, self.x, self.y, ' ', libtcod.BKGND_NONE)
+
+class Fighter:
+	""" Combat related Stats and Methods """
+	def __init__(self, hl=[0,0,0,1], essence=0, strength=1, dexterity=1, stamina=1, perception=1, intelligence=1, wits=1, exp=0, skills={}, death_function=None, bonus={}):
+		self.death_function = death_function
+		self.max_hl = hl
+		self.hl = list(hl)
+		self.essence = essence
+		self.skills = skills
+		self.base_strength = strength
+		self.base_dexterity = dexterity
+		self.base_stamina = stamina
+		self.base_perception = perception
+		self.base_intelligence = intelligence
+		self.base_wits = wits
+		self.bonus = bonus
+		if len(self.skills) != 25:
+			for skill in ['Archery',
+						 'Martial-Arts',
+						 'Melee',
+						 'Thrown',
+						 'War',
+						 'Athletics',
+						 'Awareness',
+						 'Dodge',
+						 'Larceny',
+						 'Stealth',
+						 'Integrity',
+						 'Performance',
+						 'Presence',
+						 'Resistance',
+						 'Survival',
+						 'Bureaucracy',
+						 'Linguistics',
+						 'Ride',
+						 'Sail',
+						 'Socialize',
+						 'Craft',
+						 'Investigation',
+						 'Lore',
+						 'Medicine',
+						 'Occult']:
+				if skill not in self.skills:
+					self.skills[skill] = 0
+
+	@property
+	def strength(self):
+		return (self.base_strength + calcBonuses('strength', self))
+
+	@property
+	def stamina(self):
+		return self.base_stamina + calcBonuses('stamina', self)
+
+	@property
+	def dexterity(self):
+		return self.base_dexterity + calcBonuses('dexterity', self)
+
+	@property
+	def perception(self):
+		return self.base_perception + calcBonuses('perception', self)
+
+	@property
+	def intelligence(self):
+		return self.base_intelligence + calcBonuses('intelligence', self)
+
+	@property
+	def wits(self):
+		return self.base_wits + calcBonuses('wits', self)
+
+
+
+	def dodgeDV(self):
+		""" Returns (Essence + DEX + Dodge) / 2 """
+		return ((self.essence + self.dexterity + self.skills['Dodge'])/2) #+ calcBonuses('dodgeDV', self)
+
+
+
+	def bashing_soak(self):
+		""" Iterates through armor slots
+			sums up the bashing soak properties,
+			adds stamina and then returns it
+		"""
+		from utils import get_equipped_in_slot
+
+		armor_slots = ['head', 'chest', 'arms', 'legs', 'feet', 'hands']
+		soak = self.stamina
+		for slot in armor_slots:
+			item = get_equipped_in_slot(slot)
+			if item is not None:
+				soak += item.armor.bashing_soak
+		return soak
+
+
+
+	def lethal_soak(self):
+		""" Iterates through armor slots
+			sums up the lethal soak properties,
+			adds stamina and then returns it
+		"""
+		from utils import get_equipped_in_slot
+
+		armor_slots = ['head', 'chest', 'arms', 'legs', 'feet', 'hands']
+		if self.essence > 0:
+			soak = int(math.floor(self.stamina/2))
+		else:
+			soak = 0
+		for slot in armor_slots:
+			item = get_equipped_in_slot(slot)
+			if item is not None:
+				soak += item.armor.lethal_soak
+		return soak
+
+
+
+	def hardness(self):
+		""" Iterates through armor slots
+			sums up the hardness properties,
+			and then returns it
+		"""
+		from utils import get_equipped_in_slot
+
+		armor_slots = ['head', 'chest', 'arms', 'legs', 'feet', 'hands']
+		hardness = 0
+		for slot in armor_slots:
+			item = get_equipped_in_slot(slot)
+			if item is not None:
+				hardness += item.armor.hardness
+		return hardness
+
+
+
+	def fov(self):
+		""" Returns a maximum viewing distance,
+			calculated from Perception + (Awareness*2) + Bonuses
+			with a minimum of 3
+		"""
+		return max(3, int(self.perception + self.skills['Awareness']*2 + calcBonuses('awareness', self)))
+
+
+
+	def foh(self):
+		""" Returns a maximum hearing distance,
+			calculated from Perception + (Awareness*3) + Bonuses
+			with a minimum of 3
+		"""
+		return max(3, int(self.perception + self.skills['Awareness']*3 + calcBonuses('awareness', self)))
+
+
+
+	def onslaughtPenalty(self):
+		""" Returns the onslaught Penalty as an integer
+			calculated from adjacent enemies - 1
+		"""
+		from utils import adjacent, is_player
+
+		penalty = -1
+		for spot in adjacent(self.owner.x, self.owner.y):
+			for obj in gvar.game.objects:
+				if obj.fighter and not is_player(obj) and obj.x == spot[0] and obj.y == spot[1]:
+					penalty += 1
+		return penalty
+
+
+
+	def take_damage(self, damage):
+		""" Apply the given amount of damage
+			and invoke the death_function, if necessary
+		"""
+		from utils import is_player
+
+		if not is_player (self.owner):
+			for level in [0, 1, 2, 3]:					# go through all Health Levels
+				if damage > 0 and self.hl[level] > 0:
+					d = damage - self.hl[level]
+					if d >= 0:
+						self.hl[level] = 0
+						damage = d
+					else:
+						self.hl[level] -= damage
+						damage = 0
+				if level == 3 and self.hl[level] <= 0:
+					function = self.death_function
+					if function is not None:
+						function(self.owner) 			# Apply Death Function if possible
+
+
+
+	def attack(self, target, ranged=False):
+		""" Performs an attack against the target.
+			Melee or ranged indicated by ranged boolean """
+		from utils import get_equipped_in_slot,d10, is_player
+		from render import message
+
+		activeWeapon = get_equipped_in_slot('hand')	
+		if (activeWeapon is None):										# get equipped weapon from slot 'hand'
+			activeWeapon = Equipment(slot='hand', weapon=Weapon())  	# Insert dummy weapon if no weapon is equipped
+																		# TODO Two-Handed Weapons
+
+		weapon = activeWeapon.ranged if ranged else activeWeapon.weapon 				# determine weapon/ranged component to use
+
+		hitroll = d10(self.dexterity + self.skills[weapon.skill], 'Hit', player=is_player(self.owner))
+		if hitroll[0] != 'botch':
+			hitroll[0] -= self.health_penalty()
+			hitroll[0] = max(hitroll[0], 0)
+		else:
+			pass	#TODO Botch Behaviour
+
+		# Check for hit, if successes > enemy's dodge DV ( -onslaughtPenalty for player)
+		threshold = target.dodgeDV()
+		threshold -= target.onslaughtPenalty() if is_player(target.owner) else 0
+
+		if hitroll[0] != 'botch' and hitroll[0] > threshold:	# target hit, roll damage
+			if ranged:
+				dmgroll = d10(weapon.damage, 'Damage', botchable=False, player=is_player(self.owner))
+			else:
+				dmgroll = d10(self.strength + weapon.damage, 'Damage', botchable=False, player=is_player(self.owner))
+			damage = dmgroll[0] + (hitroll[0] - threshold)		# add remaining successes from hitroll
+
+			if damage > target.hardness():						# check if damage is bigger than hardness
+				if weapon.damage_type == 'bashing':				# apply soak
+					damage -= target.bashing_soak()
+				elif weapon.damage_type == 'lethal':
+					damage -= target.lethal_soak()
+
+				if damage > 0:									# apply damage
+					message(self.owner.name.capitalize() + ' hits ' + target.owner.name + ' for ' + str(damage) + ' hit points.')
+					target.take_damage(damage)
+				else:
+					message(self.owner.name.capitalize() + ' hits ' + target.owner.name + ' but the strike bounces off his armor!')
+		else:
+			message(self.owner.name.capitalize() + ' attacks ' + target.owner.name + ' but misses.')
+
+		return weapon.speed
+
+
+
+	def heal(self, amount):
+		""" Heal by the given amount,
+			iterating through the health levels,
+			without going over the maximum
+		"""
+
+		for level in [3, 2, 1, 0]:
+			if amount > 0 and self.hl[level] < self.max_hl[level]:
+				d = amount - (self.max_hl[level] - self.hl[level])
+				if d >= 0:
+					self.hl[level] = self.max_hl[level]
+					amount = d
+				else:
+					self.hl[level] += amount
+					amount = 0
+
+	def health_penalty(self):
+		""" Returns the current health penalty """
+
+		for level in [3, 2, 1, 0]:
+			if self.hl[level] <= 0:
+				if level == 2:
+					return 4
+				elif level == 1:
+					return 2
+				elif level == 0:
+					return 1
+		return 0
+
+	def join_battle(self):
+		""" Decreases the overall tick level.
+			Puts owner into global Tick counter
+			with join battle roll as Priority
+		"""
+		from utils import d10, is_player, decrease_tick_level
+
+		decrease_tick_level()
+		# Roll Wits + Awareness as Join Battle
+		roll = d10(self.wits + self.skills["Awareness"], 'Join Battle', botchable=False, player=is_player(self.owner))
+		if not gvar.game.ticks.contains(self.owner):
+			gvar.game.ticks.put(self.owner, roll[0])
+
+	def movement_speed(self):
+		""" Returns the movement speed
+			calculated through 5 - Athletics/2
+		"""
+		#TODO Better calculation
+		return max(1, 5 - math.floor(self.skills["Athletics"]/2))
+
+class MobAI:
+	""" AI for NPCs
+		Can have different statuses for different behaviour
+		StatusDelta is the remaining turns till the status wears off
+	"""
+
+	def __init__(self, status=None, statusDelta=0):
+		self.status = status
+		self.statusDelta = statusDelta
+
+
+
+	def applyStatus(self, status, rounds):
+		""" Apply a new status """
+
+		self.status = status
+		self.statusDelta = rounds
+
+
+
+	def take_turn(self):
+		""" Normal Turn Routine
+			Mobs take turns if the player can hear it #TODO Change to Mob's FOH
+			If they're close enough, they attack
+		"""
+		from render import message
+		from utils import a_star_search, applyBonus, revertBonus
+
+		mob = self.owner
+		status = self.status
+		delta = self.statusDelta
+
+		speed = 1	# Base speed of 1 tick, to prevent infinite mob action loops
+
+		if libtcod.map_is_in_fov(gvar.foh_map, mob.x, mob.y):
+
+			# Normal Behaviour
+			if not status:
+				if mob.distance_to(gvar.game.player) >= 2:	# Move towards the player, if she's too far away
+					destination = a_star_search((mob.x, mob.y),(gvar.game.player.x, gvar.game.player.y)) # Perform A*-Search
+
+					if destination == [(mob.x, mob.y), (mob.x, mob.y)]:	# idle for the next 3 turns, if no path to player is found
+						self.status = 'idle'							#TODO Should have prevented A*-Overload, doesn't seem to work
+						self.statusDelta = 3
+					mob.move_to(destination[-2])
+					speed = self.owner.fighter.movement_speed()
+
+				elif sum(gvar.game.player.fighter.hl) > 0:				# Player is close enough, perform an attack
+					speed = mob.fighter.attack(gvar.game.player.fighter)
+
+
+			# Confusion - Moves to random directions, also -4 dodgeDV penalty
+			elif status == 'confusion':
+				applyBonus('dodgeDV', -4, self.owner.fighter)
+				if delta > 0:
+					self.owner.move(libtcod.random_get_int(0, -1, 1), libtcod.random_get_int(0, -1, 1))
+					self.statusDelta -= 1
+				else:
+					revertBonus('dodgeDV', -4, self.owner.fighter)
+					self.status = None
+					message('The smoke around the ' + self.owner.name + ' disappears.', libtcod.violet)
+				if self.owner.fighter is not None:
+					speed = self.owner.fighter.movement_speed()
+
+
+			# Idle - Don't do anything, Speed 3
+			elif status == 'idle':
+				if delta > 0:
+					self.statusDelta -= 1
+				else:
+					self.status = None
+				speed = 3
+
+		return speed
+
+
+
+class Item:
+	""" An item that can be picked up and used.
+		args is a List of Args that are passed to the use_function
+	"""
+	def __init__(self, use_function=None, args=[], count=1):
+			self.use_function = use_function
+			self.args = args
+			self.count = count
+
+
+
+	def pick_up(self):
+		""" Add the item to the player's inventory
+			#TODO Inventory System for Enemies and other NPCs
+		"""
+		from render import message
+
+		if len(gvar.game.player.inventory) >= 26:	# Inventory Full, Alphabetical Limit
+													#TODO Multi-Page Menus & Encumbrance System
+			message('Your inventory is full, cannot pick up ' + self.owner.name + '.', libtcod.red)
+		else:
+			for item in gvar.game.player.inventory:	# Loop through items already in inventory
+				if item.name == self.owner.name:	# and stack them
+					item.item.count += 1
+					print item.item.count
+					gvar.game.objects.remove(self.owner)	# Remove the item from the map
+					message('You picked up a ' + self.owner.name + '!', libtcod.green)
+					return
+			gvar.game.player.inventory.append(self.owner)
+			gvar.game.objects.remove(self.owner)
+			message('You picked up a ' + self.owner.name + '!', libtcod.green)
+
+
+
+	def use(self):
+		""" call the use_function, if its defined
+			if there are args, add them to the call
+		"""
+		from render import message
+
+		if self.use_function is None and self.owner.equipment is None: 		# No valid action found
+			message('The ' + self.owner.name + ' cannot be used.')
+		elif self.use_function is None and self.owner.equipment is not None:# It's an Equipment, equip it
+			self.owner.equipment.toggle_equip()
+		else:
+			if len(self.args) == 0:
+				if self.use_function() != 'cancelled':						# It can be used, call use_function
+					if self.count>=2:										# Decrease Stack count, or remove the item
+						self.count -= 1
+					else:
+						gvar.game.player.inventory.remove(self.owner)		#TODO Inventory for Mobs
+			else:
+				if self.use_function(self.args[0], self.args[1]) != 'cancelled':
+					if self.count>=2:
+						self.count -= 1
+					else:
+						gvar.game.player.inventory.remove(self.owner)		#TODO Inventory for Mobs
+
+
+
+	def drop(self):
+		""" Drop the Item
+			Add it to the Global Objects List
+			and set it's coordinates to the dropper's
+		"""
+		from render import message
+
+		if self.owner.equipment:
+			self.owner.equipment.dequip()
+		objects.append(self.owner)
+		gvar.game.player.inventory.remove(self.owner)
+		self.owner.x = gvar.game.player.x
+		self.owner.y = gvar.game.player.y
+		message('You dropped a ' + self.owner.name + '.', libtcod.yellow)
+
+
+
+class Equipment:
+	""" A component representing equippable objects
+		armors, weapons, rings, clothes, etc.
+	"""
+
+	def __init__(self, slot, is_equipped=False, bonus={}, weapon=None, ranged=None, armor=None):
+		self.slot = slot 					# string,  armor slot, possibilities: ['head', 'chest', 'arms', 'legs', 'feet', 'hands']
+		self.is_equipped = is_equipped		# boolean, equip status
+		self.bonus = bonus 					# dict, format: {attribute/skill: value} for
+		self.weapon = weapon 				# Weapon() component
+		self.ranged = ranged 				# Ranged() component
+		self.armor = armor 					# Armor() component
+
+
+
+	def toggle_equip(self):
+		""" Equips or Dequips the Equipment """
+
+		if self.is_equipped:
+			self.dequip()
+		else:
+			self.equip()
+
+
+
+	def equip(self):
+		""" Equips the Equipment
+			Dequipping other items in this slot
+		"""
+		from utils import get_equipped_in_slot
+		from render import message
+
+		currentEquipped = get_equipped_in_slot(self.slot)
+		if currentEquipped is not None:
+			currentEquipped.dequip()
+		self.is_equipped = True
+		message('Equipped the ' + self.owner.name, libtcod.yellow)
+
+
+
+	def dequip(self):
+		""" Dequips the Equipment"""
+		from render import message
+
+		if not self.is_equipped: return
+		self.is_equipped = False
+		message('Put off the ' + self.owner.name, libtcod.yellow)
+
+
+
+class Weapon:
+	""" Component for Weapon stats to be included in Equipment """
+
+	def __init__(self, accuracy=0, damage=0, damage_type='lethal', skill='Martial-Arts', speed=5):
+		self.accuracy = accuracy
+		self.damage = damage
+		self.damage_type = damage_type
+		self.skill = skill
+		self.speed = speed
+
+
+
+class Ranged:
+	""" Component for Ranged Weapon stats to be included in Equipment """
+
+	def __init__(self, accuracy=0, damage=0, damage_type='lethal', skill='Archery', speed=5):
+		self.accuracy = accuracy
+		self.damage = damage
+		self.damage_type = damage_type
+		self.skill = skill
+		self.speed = speed
+
+
+
+class Armor:
+	""" Component for Armor stats to be included in Equipment """
+
+	def __init__(self, bashing_soak=0, lethal_soak=0, fatigue=0, penalty=0, hardness=0):
+		self.bashing_soak = bashing_soak
+		self. lethal_soak = lethal_soak
+		self.fatigue = fatigue
+		self.penalty = penalty
+		self.hardness = hardness

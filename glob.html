@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Nightcaste 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Nightcaste 0.3 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">Nightcaste 0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p>import libtcodpy as libtcod</p>
+<p>&#8220;&#8221;&#8221; Global Module for global variables</p>
+<blockquote>
+<div><p>Constants for Rendering and Map Creation</p>
+<dl class="docutils">
+<dt>gvar.game: Game instance, consisting of all information that will be saved into the savegame</dt>
+<dd>#player
+#map
+#game messages
+#dungeon_level
+#game_state
+#objects
+#ticks</dd>
+</dl>
+<p>An Admin() Object for Debugging purposes</p>
+</div></blockquote>
+<p>&#8220;&#8221;&#8220;</p>
+<p>SCREEN_WIDTH = 80
+SCREEN_HEIGHT = 53
+MAP_WIDTH = 80
+MAP_HEIGHT = 44</p>
+<p>BAR_WIDTH = 20
+PANEL_HEIGHT = 10
+PANEL_Y = SCREEN_HEIGHT - PANEL_HEIGHT
+MSG_X = BAR_WIDTH + 2
+MSG_WIDTH = SCREEN_WIDTH - BAR_WIDTH - 2
+MSG_HEIGHT = PANEL_HEIGHT - 1</p>
+<dl class="docutils">
+<dt>class Game:</dt>
+<dd><p class="first">#a game instance
+def __init__(self):</p>
+<blockquote class="last">
+<div><p>global playermaxhl
+from mechanics import player_death
+from components import Object,Fighter
+from utils import PriorityQueue
+self.player = Object(0, 0, &#8216;&#64;&#8217;, color=libtcod.white, name=&#8217;player&#8217;, blocks=True, inventory=[])
+compFighter = Fighter(hl=[1,2,2,1], essence=2, strength=1, dexterity=1, stamina=1, death_function=player_death)
+playermaxhl = compFighter.hl
+self.player.fighter = compFighter
+self.player.fighter.owner = self.player</p>
+<p>self.ticks = PriorityQueue()
+self.map=[]
+self.game_msgs = []
+self.last_die_rolls = []
+self.dungeon_level = 1
+self.game_state = &#8216;playing&#8217;
+self.objects=[]
+self.rooms=[]</p>
+</div></blockquote>
+</dd>
+<dt>class Admin:</dt>
+<dd><p class="first">#Admin Settings
+def __init__(self):</p>
+<blockquote class="last">
+<div>self.light_all = False</div></blockquote>
+</dd>
+</dl>
+<p>admin = Admin()</p>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/gvar.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Nicas Kilian Heydorn.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      
+      |
+      <a href="_sources/gvar.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>

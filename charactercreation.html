@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Nightcaste 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Nightcaste 0.3 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">Nightcaste 0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p>import glob</p>
+<dl class="docutils">
+<dt>def create_character():</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Inits the Stats of the player</dt>
+<dd>and controls menu flow of the character creation process</dd>
+</dl>
+<p>&#8220;&#8221;&#8220;</p>
+<p>reset_attributes()</p>
+<p>attrs = distribute_attributes()
+if attrs == &#8216;exit&#8217;:</p>
+<blockquote>
+<div>return &#8216;exit&#8217;</div></blockquote>
+<dl class="last docutils">
+<dt>else:</dt>
+<dd><p class="first">skills = distribute_skills()
+if skills == &#8216;exit&#8217;:</p>
+<blockquote>
+<div>return &#8216;exit&#8217;</div></blockquote>
+<dl class="last docutils">
+<dt>elif skills == &#8216;back&#8217;:</dt>
+<dd>create_character()</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>def reset_attributes():</dt>
+<dd><p class="first">&#8220;&#8221;&#8221; Resets the attributes of the player Object to 1 &#8220;&#8221;&#8220;</p>
+<p class="last">gvar.game.player.fighter.strength = 1
+gvar.game.player.fighter.dexterity = 1
+gvar.game.player.fighter.stamina = 1
+gvar.game.player.fighter.perception = 1
+gvar.game.player.fighter.wits = 1</p>
+</dd>
+<dt>def distribute_attributes():</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Show a menu for distributing attribute points</dt>
+<dd>and continue until attribute points are depleted</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from render import menu</p>
+<p>attributes_points = 6
+reset_attributes()
+while attributes_points &gt; 0:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>attributes_choice = menu(&#8220;ATTRIBUTESnPress a key to distribute pointsnnPoints remaining: &#8221; + str(attributes_points),</dt>
+<dd><p class="first">[&#8220;Strength&#8221;, &#8220;Dexterity&#8221;, &#8220;Stamina&#8221;, &#8220;Perception&#8221;, &#8220;Wits&#8221;],
+gvar.SCREEN_WIDTH/2,
+option_descriptions=[</p>
+<blockquote class="last">
+<div><blockquote>
+<div>str(gvar.game.player.fighter.strength),
+str(gvar.game.player.fighter.dexterity),
+str(gvar.game.player.fighter.stamina),
+str(gvar.game.player.fighter.perception),
+str(gvar.game.player.fighter.wits)</div></blockquote>
+<p>])</p>
+</div></blockquote>
+</dd>
+<dt>if attributes_choice == 0:</dt>
+<dd>gvar.game.player.fighter.strength += 1</dd>
+<dt>elif attributes_choice == 1:</dt>
+<dd>gvar.game.player.fighter.dexterity += 1</dd>
+<dt>elif attributes_choice == 2:</dt>
+<dd>gvar.game.player.fighter.stamina += 1</dd>
+<dt>elif attributes_choice == 3:</dt>
+<dd>gvar.game.player.fighter.perception += 1</dd>
+<dt>elif attributes_choice == 4:</dt>
+<dd>gvar.game.player.fighter.wits += 1</dd>
+<dt>elif attributes_choice == &#8216;exit&#8217;:</dt>
+<dd>return &#8216;exit&#8217;</dd>
+<dt>else:</dt>
+<dd>continue</dd>
+</dl>
+<p>attributes_points -= 1</p>
+</div></blockquote>
+</dd>
+<dt>def distribute_skills():</dt>
+<dd><dl class="first docutils">
+<dt>&#8220;&#8221;&#8221; Shows a menu to distribute skill points</dt>
+<dd>until skill points are depleted
+resetting skill points to prevent cheating
+Not all skills are listed here yet, because not all skills are implemented</dd>
+</dl>
+<p>&#8220;&#8221;&#8221;
+from render import menu</p>
+<dl class="docutils">
+<dt>for skill in gvar.game.player.fighter.skills:           # Reset Skill points</dt>
+<dd>gvar.game.player.fighter.skills[skill] = 0</dd>
+</dl>
+<p>skill_points = 10                       # Points to be distributed
+skill_limit = 3                         # Maximum skill level
+skills = [&#8216;Martial-Arts&#8217;,       # Available Skills</p>
+<blockquote>
+<div>&#8216;Melee&#8217;,
+&#8216;Archery&#8217;,
+&#8216;Athletics&#8217;,
+&#8216;Awareness&#8217;,
+&#8216;Dodge&#8217;,
+&#8216;Resistance&#8217;,
+&#8216;Medicine&#8217;]</div></blockquote>
+<p>descriptions = []
+for skill in skills:</p>
+<blockquote>
+<div>descriptions.append(0)</div></blockquote>
+<dl class="last docutils">
+<dt>while skill_points &gt; 0:</dt>
+<dd><dl class="first docutils">
+<dt>for skill in skills:</dt>
+<dd>descriptions[skills.index(skill)] = str(gvar.game.player.fighter.skills[skill])</dd>
+</dl>
+<p>skill_choice = menu(&#8220;SKILLSnPress a key to distribute pointsnnPoints remaining: &#8221; + str(skill_points), skills, gvar.SCREEN_WIDTH/2, option_descriptions=descriptions)
+if skill_choice == &#8216;exit&#8217;:</p>
+<blockquote>
+<div>skill_points = 0
+return &#8216;exit&#8217;
+break</div></blockquote>
+<dl class="docutils">
+<dt>elif skill_choice &gt;= 0 and skill_choice &lt; len(skills):</dt>
+<dd><dl class="first last docutils">
+<dt>if gvar.game.player.fighter.skills[skills[skill_choice]] &lt; 3:</dt>
+<dd>gvar.game.player.fighter.skills[skills[skill_choice]] += 1</dd>
+<dt>else:</dt>
+<dd>continue</dd>
+</dl>
+</dd>
+<dt>else:</dt>
+<dd>continue</dd>
+</dl>
+<p class="last">skill_points -= 1</p>
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/charactercreation.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Nicas Kilian Heydorn.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      
+      |
+      <a href="_sources/charactercreation.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>

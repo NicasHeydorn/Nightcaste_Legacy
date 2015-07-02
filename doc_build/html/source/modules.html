@@ -132,20 +132,8 @@
 <code class="descclassname">nightcaste.</code><code class="descname">new_game</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nightcaste.new_game" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line">Start a new game</div>
-<div class="line">Create a map, FOV Map and print Welcome Mesage </div>
+<div class="line">Create a map, FOV Map and print Welcome Mesage</div>
 </div>
-</dd></dl>
-
-<dl class="function">
-<dt id="nightcaste.save_game">
-<code class="descclassname">nightcaste.</code><code class="descname">save_game</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nightcaste.save_game" title="Permalink to this definition">¶</a></dt>
-<dd><p>open a new empty shelve (possibly overwriting an old one) to write the game data</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nightcaste.load_game">
-<code class="descclassname">nightcaste.</code><code class="descname">load_game</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nightcaste.load_game" title="Permalink to this definition">¶</a></dt>
-<dd><p>open the previously saved shelve and load the game data</p>
 </dd></dl>
 
 <dl class="function">
@@ -153,7 +141,7 @@
 <code class="descclassname">nightcaste.</code><code class="descname">next_level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nightcaste.next_level" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line">Go deeper into the Dungeon.</div>
-<div class="line">Increase the Dungeon Level and create a new map </div>
+<div class="line">Increase the Dungeon Level and create a new map</div>
 </div>
 </dd></dl>
 
@@ -221,7 +209,7 @@
 <p>Contains all the Basic components of the game.</p>
 <dl class="class">
 <dt id="components.Object">
-<em class="property">class </em><code class="descclassname">components.</code><code class="descname">Object</code><span class="sig-paren">(</span><em>currentDungeon</em>, <em>currentLevel</em>, <em>x</em>, <em>y</em>, <em>char</em>, <em>name=''</em>, <em>color=Color(255</em>, <em>255</em>, <em>255)</em>, <em>blocks=False</em>, <em>exp=0</em>, <em>always_visible=False</em>, <em>fighter=None</em>, <em>ai=None</em>, <em>item=None</em>, <em>equipment=None</em>, <em>inventory=[]</em>, <em>use_function=None</em>, <em>args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Object" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">components.</code><code class="descname">Object</code><span class="sig-paren">(</span><em>currentDungeon</em>, <em>currentLevel</em>, <em>x</em>, <em>y</em>, <em>char</em>, <em>id=None</em>, <em>name=''</em>, <em>color=Color(255</em>, <em>255</em>, <em>255)</em>, <em>blocks=False</em>, <em>exp=0</em>, <em>always_visible=False</em>, <em>fighter=None</em>, <em>ai=None</em>, <em>item=None</em>, <em>equipment=None</em>, <em>inventory=[]</em>, <em>use_function=None</em>, <em>args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#components.Object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generic Object, which can have multiple components and become the player, a mob, stairs, loot, etc.</p>
 <dl class="attribute">
 <dt id="components.Object.args">
@@ -816,7 +804,7 @@
 
 <dl class="class">
 <dt id="mapcreation.Rect">
-<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">Rect</code><span class="sig-paren">(</span><em>map</em>, <em>x</em>, <em>y</em>, <em>w</em>, <em>h</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Rect" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">Rect</code><span class="sig-paren">(</span><em>map</em>, <em>x</em>, <em>y</em>, <em>w</em>, <em>h</em>, <em>id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Rect" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Rectangle used for creating rooms on the map</p>
 <dl class="attribute">
 <dt id="mapcreation.Rect.x1">
@@ -935,7 +923,7 @@
 
 <dl class="class">
 <dt id="mapcreation.World">
-<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">World</code><span class="sig-paren">(</span><em>worldspace</em>, <em>dungeons=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.World" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">World</code><span class="sig-paren">(</span><em>worldspace</em>, <em>dungeons=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.World" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line">The World Objects contains all Dungeons (and other Map Collections, like the Worldspace)</div>
 <div class="line">It has utilities for generating random Dungeons and Scenarios, as well.</div>
@@ -944,7 +932,7 @@
 
 <dl class="class">
 <dt id="mapcreation.Dungeon">
-<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">Dungeon</code><span class="sig-paren">(</span><em>id</em>, <em>maps=[]</em>, <em>depth=1</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Dungeon" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">Dungeon</code><span class="sig-paren">(</span><em>id=None</em>, <em>maps=None</em>, <em>depth=1</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Dungeon" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line">A Collection of maps representing a Dungeon with multiple levels.</div>
 </div>
@@ -957,7 +945,7 @@
 
 <dl class="class">
 <dt id="mapcreation.Map">
-<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">Map</code><span class="sig-paren">(</span><em>map=None</em>, <em>rooms=None</em>, <em>tree=None</em>, <em>objects=None</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">mapcreation.</code><code class="descname">Map</code><span class="sig-paren">(</span><em>id=None</em>, <em>map=None</em>, <em>rooms=None</em>, <em>objects=None</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line">A map object, part of a Dungeon.</div>
 </div>
@@ -968,6 +956,7 @@
 <div class="line"><strong>objects</strong> contains all objects (Items, Mobs) in the map</div>
 <div class="line">A map also has a <strong>owner</strong> attribute, which is the Dungeon()-Instance containing the map</div>
 <div class="line">The <strong>owner</strong> has to be set from outside when initializing the map</div>
+<div class="line"><strong>upstairs</strong> and <strong>downstairs</strong> are wuick references to the up- and downstairs objects in the objects array</div>
 </div>
 <dl class="attribute">
 <dt id="mapcreation.Map.level">
@@ -1024,10 +1013,11 @@
 
 <dl class="method">
 <dt id="mapcreation.Map.adjacent">
-<code class="descname">adjacent</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>tile_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.adjacent" title="Permalink to this definition">¶</a></dt>
+<code class="descname">adjacent</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>tile_type=None</em>, <em>diagonal=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.adjacent" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line">return an array of all adjacent tiles</div>
 <div class="line">or an array of all adjacent tiles with given tile_type</div>
+<div class="line">If the diagonal Flag is set to False, returns only non-diagonal Tiles</div>
 </div>
 </dd></dl>
 
@@ -1038,12 +1028,6 @@
 <div class="line">returns an array of all adjacent tiles as tuples</div>
 <div class="line">if an exception is set, blocking check wont be executed for the given spot</div>
 </div>
-</dd></dl>
-
-<dl class="method">
-<dt id="mapcreation.Map.restricted_adjacent">
-<code class="descname">restricted_adjacent</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#mapcreation.Map.restricted_adjacent" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns an array of adjacent tiles, without the diagonal tiles</p>
 </dd></dl>
 
 <dl class="method">
@@ -1176,7 +1160,7 @@
 </div>
 <div class="line-block">
 <div class="line">If the crossborder flag is set, it performs 15 searches from random spots on the map,</div>
-<div class="line">which doesn&#8217;t guarantee reachability, but the probability of non-reachability is sufficient</div>
+<div class="line">which doesn&#8217;t guarantee reachability, but the probability of non-reachability is sufficiently low</div>
 </div>
 </dd></dl>
 
@@ -1221,9 +1205,19 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="spawn.spawn_stuff">
+<code class="descclassname">spawn.</code><code class="descname">spawn_stuff</code><span class="sig-paren">(</span><em>map</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.spawn_stuff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forwarding function for spawning stairs, mobs and items</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="spawn.spawn_player">
 <code class="descclassname">spawn.</code><code class="descname">spawn_player</code><span class="sig-paren">(</span><em>array_dungeon_level</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.spawn_player" title="Permalink to this definition">¶</a></dt>
-<dd><p>Spawns the player on an unblocked spot in the given level of the given dungeon</p>
+<dd><div class="line-block">
+<div class="line">Spawns the player on an unblocked spot in the given level of the given dungeon, or, if the level has upstairs,</div>
+<div class="line">spawns the player at the upstairs&#8217; position</div>
+<div class="line">Also it invokes the generation of a new random map, if the next level isn&#8217;t yet defined.</div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -1233,18 +1227,18 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="spawn.spawn_upstairs">
+<code class="descclassname">spawn.</code><code class="descname">spawn_upstairs</code><span class="sig-paren">(</span><em>map</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.spawn_upstairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawns the stairs to the previous level, or to the worldspace, if it&#8217;s the first level</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="spawn.spawn_downstairs">
 <code class="descclassname">spawn.</code><code class="descname">spawn_downstairs</code><span class="sig-paren">(</span><em>map</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.spawn_downstairs" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line">Spawns the stairs to the next level</div>
-<div class="line">Guarantees that it is rechable from the player&#8217;s position</div>
+<div class="line">Guarantees that it is rechable from the upstairs position</div>
 </div>
-</dd></dl>
-
-<dl class="function">
-<dt id="spawn.spawn_stuff">
-<code class="descclassname">spawn.</code><code class="descname">spawn_stuff</code><span class="sig-paren">(</span><em>map</em><span class="sig-paren">)</span><a class="headerlink" href="#spawn.spawn_stuff" title="Permalink to this definition">¶</a></dt>
-<dd><p>Forwarding function for spawning stairs, mobs and items</p>
 </dd></dl>
 
 <dl class="function">
@@ -1312,17 +1306,6 @@
 <div class="line">Use function:</div>
 <div class="line">Open the door. Set the Character to &#8216;/&#8217;, tile_type to &#8216;door&#8217; and do not block or block_sight.</div>
 <div class="line">Also, checks direct adjacent (not diagonal) tiles for doors, and opens them too. (As if they were double doors.)</div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="mechanics.relocate">
-<code class="descclassname">mechanics.</code><code class="descname">relocate</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#mechanics.relocate" title="Permalink to this definition">¶</a></dt>
-<dd><div class="line-block">
-<div class="line">Relocates the player to a dungeon at a given Level</div>
-<div class="line-block">
-<div class="line">args hast to be an array containing [dungeon, level]</div>
-</div>
 </div>
 </dd></dl>
 
@@ -1512,6 +1495,14 @@
 <dd><div class="line-block">
 <div class="line">returns a value between 0.3 and 1</div>
 <div class="line">depending on the distance between spot and the player&#8217;s position</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.is_visible">
+<code class="descclassname">utils.</code><code class="descname">is_visible</code><span class="sig-paren">(</span><em>(x</em>, <em>y)</em><span class="sig-paren">)</span><a class="headerlink" href="#utils.is_visible" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">returns a boolean value, if the given spot is inside the circular fov field of the player </div>
 </div>
 </dd></dl>
 

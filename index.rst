@@ -25,15 +25,6 @@ For more information on the setting, see the following links:
 Source Documentation
 ---------------------
 
-This Documentation is automatically generated from the Docstrings embeded in the code itself.
-To rebuild the documentation, run::
-
-make html
-
-inside the project root.
-
-
-
 .. toctree::
    :maxdepth: 2
 

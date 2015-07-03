@@ -285,7 +285,7 @@ class Map:
 		from roomfeatures import random_roomfeature
 
 		#fill map with walls
-		self.map = [[ Tile(char=chr(219), tile_type='wall', color=libtcod.grey)
+		self.map = [[ Tile(char=chr(219), tile_type='wall', color=libtcod.grey * libtcod.random_get_float(0, 0.7, 1))
 			for y in range(gvar.MAP_HEIGHT) ]
 				for x in range(gvar.MAP_WIDTH) ]
 
@@ -388,7 +388,8 @@ class Map:
 
 	def set_door(self, x, y):
 		""" Creates a door on the given position. """
-		self.map[x][y] = Tile(char='+', use_function="open_door", tile_type='door', blocked=True, block_sight=True, color=libtcod.light_sepia)
+		from mechanics import open_door
+		self.map[x][y] = Tile(char='+', use_function=open_door, tile_type='door', blocked=True, block_sight=True, color=libtcod.light_sepia)
 
 
 
@@ -406,7 +407,8 @@ class Map:
 
 	def set_hole(self, x, y):
 		""" Creates a hole on the given position. """
-		self.map[x][y] = Tile(char=' ', tile_type='hole', blocked=False, block_sight=False, ai_blocked=True, step_function="fall_into")
+		from mechanics import fall_into
+		self.map[x][y] = Tile(char=' ', tile_type='hole', blocked=False, block_sight=False, ai_blocked=True, step_function=fall_into)
 
 
 

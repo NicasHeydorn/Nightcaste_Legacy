@@ -26,6 +26,7 @@ def reset_attributes():
 	gvar.game.player.fighter.dexterity = 1
 	gvar.game.player.fighter.stamina = 1
 	gvar.game.player.fighter.perception = 1
+	gvar.game.player.fighter.intelligence = 1
 	gvar.game.player.fighter.wits = 1
 
 
@@ -34,21 +35,51 @@ def distribute_attributes():
 	""" |  Shows a menu for distributing attribute points
 		|  and continue until attribute points are depleted
 	"""
-	from render import menu
+	from render import menu, menu_supplement, animate_background
 
+	animate_background("attributes", .6)
 	attributes_points = 6
 	reset_attributes()
 	while attributes_points > 0:
-		attributes_choice = menu("ATTRIBUTES\nPress a key to distribute points\n\nPoints remaining: " + str(attributes_points),
-			["Strength", "Dexterity", "Stamina", "Perception", "Wits"],
-			gvar.SCREEN_WIDTH/2,
-			option_descriptions=[
-									str(gvar.game.player.fighter.strength),
-									str(gvar.game.player.fighter.dexterity),
-									str(gvar.game.player.fighter.stamina),
-									str(gvar.game.player.fighter.perception),
-									str(gvar.game.player.fighter.wits)
-								])
+
+		#Rendered Output
+		i=0
+		for attribute in ["STR", "DEX", "STA"]:
+			menu_supplement("PHYSICAL", 12, 9)
+			menu_supplement(chr(65+i) + " - " + attribute, 8, 12+i)
+			attributes = gvar.game.player.fighter.get_attributes('physical')
+			attribute_score = attributes[i]
+			for o in range(attribute_score+1):
+				menu_supplement(chr(246), 17+o, 12+i)
+			for u in range(5-attribute_score):
+				menu_supplement(chr(9), 18+attribute_score+u, 12+i)
+			i+=1
+
+		menu_supplement("SOCIAL", 36, 9)
+		menu_supplement("coming soon", 34, 12)
+		
+
+		i=0
+		for attribute in ["PER", "INT", "WIT"]:
+			menu_supplement("MENTAL", 59, 9)
+			menu_supplement(chr(68+i) + " - " + attribute, 56, 12+i)
+			attributes = gvar.game.player.fighter.get_attributes('mental')
+			attribute_score = attributes[i]
+			for o in range(attribute_score+1):
+				menu_supplement(chr(246), 64+o, 12+i)
+			for u in range(5-attribute_score):
+				menu_supplement(chr(9), 65+attribute_score+u, 12+i)
+			i+=1
+
+		# Dummy Menu
+		attributes_choice = menu("",
+			["", "", "", "", "", ""],
+			gvar.SCREEN_WIDTH,
+			alpha=0,
+			flush=False,
+			hidden=True)
+
+
 
 		if attributes_choice == 0:
 			gvar.game.player.fighter.strength += 1
@@ -59,6 +90,8 @@ def distribute_attributes():
 		elif attributes_choice == 3:
 			gvar.game.player.fighter.perception += 1
 		elif attributes_choice == 4:
+			gvar.game.player.fighter.intelligence += 1
+		elif attributes_choice == 5:
 			gvar.game.player.fighter.wits += 1
 		elif attributes_choice == 'exit':
 			return 'exit'

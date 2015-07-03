@@ -158,7 +158,7 @@ def menu_supplement(text, x, y):
 
 
 
-def menu(header, options, width, color=None, text_color=libtcod.white, alpha=1, center=False, additional_line=0, option_descriptions=None, flush=True):
+def menu(header, options, width, color=None, text_color=libtcod.white, alpha=1, center=False, additional_line=0, option_descriptions=None, flush=True, hidden=False, xOffset=0, yOffset=0):
 	""" |  Render a Full-Screen menu, overwriting the console.
 		|  @TODO Add multi-page support """
 
@@ -170,29 +170,32 @@ def menu(header, options, width, color=None, text_color=libtcod.white, alpha=1, 
  	if flush == True:
  		gvar.window = libtcod.console_new(gvar.SCREEN_WIDTH, gvar.SCREEN_HEIGHT)
 
-	#print the background
-	libtcod.console_set_default_foreground(gvar.window, text_color)
-	if color is not None:
-		libtcod.console_set_default_background(gvar.window, color)
-		libtcod.console_rect(gvar.window, 1, 1, gvar.SCREEN_WIDTH-2, height-2, False, libtcod.BKGND_SET)
-	#print the header with separating line
-	libtcod.console_print_rect_ex(gvar.window, 2, 2, width, height, libtcod.BKGND_NONE, libtcod.LEFT, header)
-	libtcod.console_hline(gvar.window,1,header_height+1,gvar.SCREEN_WIDTH-2,libtcod.BKGND_NONE)
+	if not hidden:
 
-	#print options
-	y = header_height+2
-	letter_index = ord('a')
-	for option_text in options:
-		index = options.index(option_text)
-		if index == additional_line and additional_line != 0:
-			libtcod.console_hline(gvar.window,1,y,gvar.SCREEN_WIDTH-2,libtcod.BKGND_NONE)
-			y+= 1
-		text = '(' + chr(letter_index) + ') ' + option_text
-		libtcod.console_print_ex(gvar.window, 2, y, libtcod.BKGND_NONE, libtcod.LEFT, text)
-		if option_descriptions is not None:
-			libtcod.console_print_ex(gvar.window, 25, y, libtcod.BKGND_NONE, libtcod.LEFT, option_descriptions[index])
-		y += 1
-		letter_index += 1
+		#print the background
+		libtcod.console_set_default_foreground(gvar.window, text_color)
+		if color is not None:
+			libtcod.console_set_default_background(gvar.window, color)
+			libtcod.console_rect(gvar.window, 1, 1, gvar.SCREEN_WIDTH-2, height-2, False, libtcod.BKGND_SET)
+		#print the header with separating line
+		if header != '':
+			libtcod.console_print_rect_ex(gvar.window, 2, 2, width, height, libtcod.BKGND_NONE, libtcod.LEFT, header)
+			libtcod.console_hline(gvar.window,1,header_height+1,gvar.SCREEN_WIDTH-2,libtcod.BKGND_NONE)
+
+		#print options
+		y = header_height+2
+		letter_index = ord('a')
+		for option_text in options:
+			index = options.index(option_text)
+			if index == additional_line and additional_line != 0:
+				libtcod.console_hline(gvar.window,1,y,gvar.SCREEN_WIDTH-2,libtcod.BKGND_NONE)
+				y+= 1
+			text = chr(letter_index).upper() + ' - ' + option_text
+			libtcod.console_print_ex(gvar.window, 2, y, libtcod.BKGND_NONE, libtcod.LEFT, text)
+			if option_descriptions is not None:
+				libtcod.console_print_ex(gvar.window, 25, y, libtcod.BKGND_NONE, libtcod.LEFT, option_descriptions[index])
+			y += 1
+			letter_index += 1
 
 	#blit the contents of "window" to the root console
 	if center == True:
@@ -202,7 +205,7 @@ def menu(header, options, width, color=None, text_color=libtcod.white, alpha=1, 
 		x=0
 		y=0
 
-	libtcod.console_blit(gvar.window, 0, 0, width, height, 0, x, y, 1.0, alpha)
+	libtcod.console_blit(gvar.window, 0, 0, width, height, 0, xOffset+x, yOffset+y, 1.0, alpha)
 
 	#present the root console to the player and wait for a key-press
 	libtcod.console_flush()
@@ -290,3 +293,21 @@ def admin_menu():
 	choice = menu('Admin Menu', ['Toggle FOV'], gvar.SCREEN_WIDTH, libtcod.desaturated_red, flush=False)
 	if choice == 0:
 		gvar.admin.light_all = False if gvar.admin.light_all else True
+
+
+def animate_background(animation_name, duration, reverse=False):
+	""" |  Blits images with names on a range from *animation_name*_0 to *animation_name*_x onto the screen
+		|  with given *duration*. x is the amount of files in the assets/images/<animation_name>/ directory.
+		|  The *reverse*-Flag reverses the animation
+	"""
+	import os, os.path
+	from time import sleep
+
+	end = len([name for name in os.listdir('./assets/images/' + animation_name + '/')])
+	for i in range(0, end):
+		if reverse:
+			i = end - i -1
+		libtcod.image_blit_2x(libtcod.image_load("assets/images/" + animation_name + '/' + animation_name + '_' + str(i) + '.png'),gvar.window, 0, 0)
+		libtcod.console_blit(gvar.window, 0, 0, gvar.SCREEN_WIDTH, gvar.SCREEN_HEIGHT, 0, 0, 0, 1.0, 1)
+		libtcod.console_flush()
+		sleep(float(duration) / float(end))

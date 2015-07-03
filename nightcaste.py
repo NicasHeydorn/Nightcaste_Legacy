@@ -33,6 +33,7 @@ def new_game():
 	initialize_fov()
 	color = libtcod.color_lerp(libtcod.white, libtcod.red, 0.9)
 	render.message('Welcome, Child of the Unconquered Sun.', color)
+	render.animate_background('main_menu', 0.5, reverse=True)
 	ch = create_character()
 	if ch == 'exit':
 		main_menu()
@@ -69,13 +70,12 @@ def initialize_fov():
 
 def main_menu():
 	""" Display the main menu and wait for input """
-	img = libtcod.image_load('menu_background1.png')
+	render.animate_background('main_menu', 0.5)
 
 	while not libtcod.console_is_window_closed():
 		#show the background image, at twice the regular console resolution
-		libtcod.image_blit_2x(img, 0, 0, 0)
 
-		choice = render.menu('Nightcaste', ['Play a new game', 'Continue last game', 'Quit'], 24)
+		choice = render.menu('', ['New game', 'Continue', 'Quit'], 24, center=True, alpha=0, xOffset=18, yOffset=12)
 
 		if choice == 0:
 			new_game()
@@ -122,6 +122,7 @@ def play_game():
 				player_action = input.handle_keys()
 				if player_action == 'exit':
 					save.save_game()
+					main_menu()
 					break
 				gvar.game.ticks.put(actor[1], int(player_action + actor[0]))
 

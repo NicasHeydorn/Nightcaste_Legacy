@@ -183,7 +183,7 @@ def fov_distance_coef(spot):
 	"""
 	distance = get_distance((spot[0], spot[1]), (gvar.game.player.x, gvar.game.player.y))
 	player_fov_distance = int(gvar.game.player.fighter.skills["Awareness"] + gvar.game.player.fighter.perception)
-	coef = player_fov_distance/max(distance, 1)/5
+	coef = player_fov_distance/max(distance, 1)/2
 	if spot == (gvar.game.player.x, gvar.game.player.y):
 		return 1
 	return max(coef, 0.1)

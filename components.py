@@ -3,6 +3,7 @@
 import libtcodpy as libtcod
 import gvar
 import math
+import pprint
 from utils import calcBonuses
 
 class Object:
@@ -281,6 +282,20 @@ class Fighter:
 	def wits(self):
 		return self.base_wits + calcBonuses('wits', self)
 
+	def get_attributes(self, type="all"):
+		""" Returns a list attribute scores in the order: STR DEX STA PER INT WIT """
+		attributes = list()
+		if type == 'all' or type == 'physical':
+			attributes.append(self.strength)
+			attributes.append(self.dexterity)
+			attributes.append(self.stamina)
+		if type == 'all' or type == 'mental':
+			attributes.append(self.perception)
+			attributes.append(self.intelligence)
+			attributes.append(self.wits)
+		return attributes
+
+
 
 
 	def dodgeDV(self):
@@ -379,7 +394,7 @@ class Fighter:
 		"""
 		from utils import is_player
 
-		if not is_player (self.owner):
+		if not is_player(self.owner):
 			for level in [0, 1, 2, 3]:					# go through all Health Levels
 				if damage > 0 and self.hl[level] > 0:
 					d = damage - self.hl[level]
@@ -391,7 +406,7 @@ class Fighter:
 						damage = 0
 				if level == 3 and self.hl[level] <= 0:
 					if self.death_function is not None:
-						self.death_function 			# Apply Death Function if possible
+						self.death_function(self.owner) 			# Apply Death Function if possible
 
 
 

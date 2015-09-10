@@ -11,8 +11,11 @@ def handle_keys():
 	from utils import sort_inventory
 
 	speed = 0
-
-	key = libtcod.console_wait_for_keypress(True)
+	key = libtcod.Key()
+	mouse = libtcod.Mouse()
+	key_pressed = libtcod.sys_wait_for_event(libtcod.EVENT_KEY_PRESS,key,mouse,True)
+	if not key_pressed:
+		return
 
  	# Fullscreen
 	if key.vk == libtcod.KEY_F10:
@@ -128,7 +131,11 @@ def target_tile(max_range=None, radius=0):
 		libtcod.console_flush()
 
 		#Move the Target around
-		key = libtcod.console_wait_for_keypress(True)
+		key = libtcod.Key()
+		mouse = libtcod.Mouse()
+		key_pressed = libtcod.sys_wait_for_event(libtcod.EVENT_KEY_PRESS,key,mouse,True)
+		if not key_pressed:
+			return 'cancelled'
 
 		if key.vk == libtcod.KEY_UP or key.vk == libtcod.KEY_KP8:
 			if libtcod.map_is_in_fov(gvar.fov_map, target.x, target.y-1):
@@ -183,7 +190,12 @@ def target_adjacent(relative=False):
 
 	x = 0
 	y = 0
-	key = libtcod.console_wait_for_keypress(True)
+	key = libtcod.Key()
+	mouse = libtcod.Mouse()
+	key_pressed = libtcod.sys_wait_for_event(libtcod.EVENT_KEY_PRESS,key,mouse,True)
+	if not key_pressed:
+		return
+
 	if key.vk == libtcod.KEY_KP4 or key.vk == libtcod.KEY_LEFT:
 		x -= 1
 	elif key.vk == libtcod.KEY_KP8 or key.vk == libtcod.KEY_UP:

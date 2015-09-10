@@ -1,4 +1,5 @@
 import gvar
+import libtcodpy as libtcod
 
 def create_character():
 	""" |  Inits the Stats of the player
@@ -41,23 +42,24 @@ def distribute_attributes():
 	attributes_points = 6
 	reset_attributes()
 	while attributes_points > 0:
+		libtcod.console_clear(gvar.window)
 
 		#Rendered Output
+		menu_supplement("Points remaining: " + chr(246)*attributes_points + chr(9)*(6-attributes_points), 5, gvar.SCREEN_HEIGHT - 5)
 		i=0
 		for attribute in ["STR", "DEX", "STA"]:
 			menu_supplement("PHYSICAL", 12, 9)
-			menu_supplement(chr(65+i) + " - " + attribute, 8, 12+i)
+			menu_supplement(chr(65+i) + " - " + attribute, 9, 12+i)
 			attributes = gvar.game.player.fighter.get_attributes('physical')
 			attribute_score = attributes[i]
-			for o in range(attribute_score+1):
-				menu_supplement(chr(246), 17+o, 12+i)
+			for o in range(attribute_score):
+				menu_supplement(chr(246), 18+o, 12+i)
 			for u in range(5-attribute_score):
 				menu_supplement(chr(9), 18+attribute_score+u, 12+i)
 			i+=1
 
 		menu_supplement("SOCIAL", 36, 9)
 		menu_supplement("coming soon", 34, 12)
-		
 
 		i=0
 		for attribute in ["PER", "INT", "WIT"]:
@@ -65,8 +67,8 @@ def distribute_attributes():
 			menu_supplement(chr(68+i) + " - " + attribute, 56, 12+i)
 			attributes = gvar.game.player.fighter.get_attributes('mental')
 			attribute_score = attributes[i]
-			for o in range(attribute_score+1):
-				menu_supplement(chr(246), 64+o, 12+i)
+			for o in range(attribute_score):
+				menu_supplement(chr(246), 65+o, 12+i)
 			for u in range(5-attribute_score):
 				menu_supplement(chr(9), 65+attribute_score+u, 12+i)
 			i+=1
@@ -79,19 +81,17 @@ def distribute_attributes():
 			flush=False,
 			hidden=True)
 
-
-
-		if attributes_choice == 0:
+		if attributes_choice == 0 and gvar.game.player.fighter.strength < 5:
 			gvar.game.player.fighter.strength += 1
-		elif attributes_choice == 1:
+		elif attributes_choice == 1 and gvar.game.player.fighter.dexterity < 5:
 			gvar.game.player.fighter.dexterity += 1
-		elif attributes_choice == 2:
+		elif attributes_choice == 2 and gvar.game.player.fighter.stamina < 5:
 			gvar.game.player.fighter.stamina += 1
-		elif attributes_choice == 3:
+		elif attributes_choice == 3 and gvar.game.player.fighter.perception < 5:
 			gvar.game.player.fighter.perception += 1
-		elif attributes_choice == 4:
+		elif attributes_choice == 4 and gvar.game.player.fighter.intelligence < 5:
 			gvar.game.player.fighter.intelligence += 1
-		elif attributes_choice == 5:
+		elif attributes_choice == 5 and gvar.game.player.fighter.wits < 5:
 			gvar.game.player.fighter.wits += 1
 		elif attributes_choice == 'exit':
 			return 'exit'
@@ -105,7 +105,9 @@ def distribute_skills():
 		|  resetting skill points to prevent cheating
 		|  Not all skills are listed here yet, because not all skills are implemented
 	"""
-	from render import menu
+	from render import menu, menu_supplement, animate_background
+
+	animate_background("abilities", .6)
 
 	for skill in gvar.game.player.fighter.skills: 		# Reset Skill points
 		gvar.game.player.fighter.skills[skill] = 0
@@ -123,9 +125,29 @@ def distribute_skills():
 	for skill in skills:
 		descriptions.append(0)
 	while skill_points > 0:
+
+		#Rendered Output
+		menu_supplement("Points remaining: " + chr(246)*skill_points + chr(9)*(10-skill_points), 5, gvar.SCREEN_HEIGHT - 5)
+
+		i=0
 		for skill in skills:
-			descriptions[skills.index(skill)] = str(gvar.game.player.fighter.skills[skill])
-		skill_choice = menu("SKILLS\nPress a key to distribute points\n\nPoints remaining: " + str(skill_points), skills, gvar.SCREEN_WIDTH/2, option_descriptions=descriptions)
+			menu_supplement(chr(65+i) + " - " + skill, 20, 12+i)
+			skill_score = gvar.game.player.fighter.skills[skill]
+			for o in range(skill_score):
+				menu_supplement(chr(246), 39+o, 12+i)
+			for u in range(5-skill_score):
+				menu_supplement(chr(9), 39+skill_score+u, 12+i)
+			i+=1
+
+
+		# Dummy Menu
+		skill_choice = menu("",
+			["", "", "", "", "", "", "", ""],
+			gvar.SCREEN_WIDTH,
+			alpha=0,
+			flush=False,
+			hidden=True)
+
 		if skill_choice == 'exit':
 			skill_points = 0
 			return 'exit'

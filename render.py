@@ -9,7 +9,8 @@ def render_all():
 		|  Recomputes the FOV.
 		|  Renders the map and all objects.
 		|  Then blits all to the main console.
-		|  Also Renders the GUI to gvar.panel """
+		|  Also Renders the GUI to gvar.panel
+	"""
 
 	from utils import get_distance, fov_distance_coef, is_visible
 	from mapcreation import Circle
@@ -26,14 +27,17 @@ def render_all():
 	mapObject = gvar.game.player.currentmap()
 	map = mapObject.map
 
+	apply_screen_impact()
+
 	for y in range(gvar.MAP_HEIGHT):
 		for x in range(gvar.MAP_WIDTH):
 			visible = is_visible((x, y))
 			if not visible or gvar.admin.light_all:
 				if map[x][y].explored or gvar.admin.light_all:
-					libtcod.console_put_char_ex(gvar.con, x, y, map[x][y].char, map[x][y].color * 0.2, libtcod.BKGND_SET)
+					print libtcod.console_get_default_background(gvar.con)
+					libtcod.console_put_char_ex(gvar.con, x, y, map[x][y].char, map[x][y].color * 0.2, libtcod.BKGND_NONE)
 			else:
-				libtcod.console_put_char_ex(gvar.con, x, y, map[x][y].char, map[x][y].color * fov_distance_coef((x, y)), libtcod.BKGND_SET )
+				libtcod.console_put_char_ex(gvar.con, x, y, map[x][y].char, map[x][y].color * fov_distance_coef((x, y)), libtcod.BKGND_NONE)
 				if fov_distance_coef((x, y)) > 0.2:
 					map[x][y].explored = True
 
@@ -50,6 +54,8 @@ def render_all():
 	libtcod.console_clear(gvar.panel)
 	render_messages()
 
+
+
 	#Player's Stats
 	render_health_levels()
 	#Dungeon Level
@@ -59,14 +65,28 @@ def render_all():
 	libtcod.console_set_default_foreground(gvar.panel, libtcod.desaturated_yellow)
 	libtcod.console_print_ex(gvar.panel, 15, 3, libtcod.BKGND_NONE, libtcod.LEFT, str(gvar.game.player.exp))
 
-
 	libtcod.console_blit(gvar.panel, 0, 0, gvar.SCREEN_WIDTH, gvar.PANEL_HEIGHT, 0, 0, gvar.PANEL_Y)
+
+
+def apply_screen_impact():
+	""" |  Render the whole screen in the color set in gvar.screen_impact
+		|  and fade out.
+	"""
+	if gvar.screen_impact is not None:
+		color = libtcod.color_lerp(libtcod.black, gvar.screen_impact[0], float(gvar.screen_impact[1]))
+		libtcod.console_set_default_background(gvar.con, color)
+		libtcod.console_rect(gvar.con, 1, 1, gvar.SCREEN_WIDTH, gvar.SCREEN_HEIGHT, False, libtcod.BKGND_SET)
+		gvar.screen_impact[1] -= 0.25
+		if gvar.screen_impact[1] < 0:
+			gvar.screen_impact = None
+
 
 
 
 def message(new_msg, color = libtcod.white):
 	""" |  Show a message in the message log
-		|  split the message if necessary, among multiple lines """
+		|  split the message if necessary, among multiple lines
+	"""
 
 	new_msg_lines = textwrap.wrap(new_msg, gvar.MSG_WIDTH)
 	for line in new_msg_lines:
@@ -138,7 +158,8 @@ def render_dice_rolls(y, roll):
 
 def render_bar(x, y, total_width, name, value, maximum, bar_color, back_color):
 	""" |  Renders a bar (HP, experience, etc)
-		|  Not currently used, but could be used in the future again """
+		|  Not currently used, but could be used in the future again
+	"""
 	bar_width = int(float(value) / maximum * total_width)
 	libtcod.console_set_default_background(gvar.panel, back_color)
 	libtcod.console_rect(gvar.panel, x, y, total_width, 1, False, libtcod.BKGND_SCREEN)
@@ -160,7 +181,8 @@ def menu_supplement(text, x, y):
 
 def menu(header, options, width, color=None, text_color=libtcod.white, alpha=1, center=False, additional_line=0, option_descriptions=None, flush=True, hidden=False, xOffset=0, yOffset=0):
 	""" |  Render a Full-Screen menu, overwriting the console.
-		|  @TODO Add multi-page support """
+		|  @TODO Add multi-page support
+	"""
 
 	if len(options) > 26: raise ValueError('Cannot have a menu with more than 26 options.')
 
@@ -209,7 +231,11 @@ def menu(header, options, width, color=None, text_color=libtcod.white, alpha=1, 
 
 	#present the root console to the player and wait for a key-press
 	libtcod.console_flush()
-	key = libtcod.console_wait_for_keypress(True)
+	key = libtcod.Key()
+	mouse = libtcod.Mouse()
+	key_pressed = libtcod.sys_wait_for_event(libtcod.EVENT_KEY_PRESS,key,mouse,True)
+	if not key_pressed:
+		return None
 
 	if key.vk == libtcod.KEY_F10:
 		libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
@@ -226,7 +252,8 @@ def menu(header, options, width, color=None, text_color=libtcod.white, alpha=1, 
 def inventory_menu(header):
 	""" |  Show a menu with each item of the inventory as an option,
 		|  separating equipped items from others.
-		|  Derives from menu() """
+		|  Derives from menu()
+	"""
 
 	line_pos = 0
 	equipcount = 0
@@ -261,7 +288,8 @@ def inventory_menu(header):
 
 def stat_menu():
 	""" |  Shows a menu displaying the Player's Stats and a possibility to distribute EXP Points.
-		|  Derives from menu() """ 
+		|  Derives from menu()
+	"""
 
 	libtcod.console_clear(gvar.window)
 	text = 'Skills:\n\n'
@@ -293,7 +321,6 @@ def admin_menu():
 	choice = menu('Admin Menu', ['Toggle FOV'], gvar.SCREEN_WIDTH, libtcod.desaturated_red, flush=False)
 	if choice == 0:
 		gvar.admin.light_all = False if gvar.admin.light_all else True
-
 
 def animate_background(animation_name, duration, reverse=False):
 	""" |  Blits images with names on a range from *animation_name*_0 to *animation_name*_x onto the screen

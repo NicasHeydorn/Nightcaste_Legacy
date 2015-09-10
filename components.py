@@ -203,7 +203,6 @@ class Object:
 	def draw(self):
 		""" Draw this object onto the Map, if it's in FOV or always_visible """
 		from utils import fov_distance_coef, is_visible
-
 		if (is_visible((self.x, self.y))) or (self.always_visible and self.currentmap().map[self.x][self.y].explored) or gvar.admin.light_all:
 			libtcod.console_put_char_ex(gvar.con, self.x, self.y, self.char, self.color * fov_distance_coef((self.x, self.y)), libtcod.BKGND_SET)
 
@@ -294,7 +293,6 @@ class Fighter:
 			attributes.append(self.intelligence)
 			attributes.append(self.wits)
 		return attributes
-
 
 
 
@@ -394,19 +392,21 @@ class Fighter:
 		"""
 		from utils import is_player
 
-		if not is_player(self.owner):
-			for level in [0, 1, 2, 3]:					# go through all Health Levels
-				if damage > 0 and self.hl[level] > 0:
-					d = damage - self.hl[level]
-					if d >= 0:
-						self.hl[level] = 0
-						damage = d
-					else:
-						self.hl[level] -= damage
-						damage = 0
-				if level == 3 and self.hl[level] <= 0:
-					if self.death_function is not None:
-						self.death_function(self.owner) 			# Apply Death Function if possible
+		for level in [0, 1, 2, 3]:					# go through all Health Levels
+			if damage > 0 and self.hl[level] > 0:
+				d = damage - self.hl[level]
+				if d >= 0:
+					self.hl[level] = 0
+					damage = d
+				else:
+					self.hl[level] -= damage
+					damage = 0
+			if level == 3 and self.hl[level] <= 0:
+				if self.death_function is not None:
+					self.death_function(self.owner) 			# Apply Death Function if possible
+		if is_player(self.owner):
+			gvar.screen_impact = [libtcod.darker_red, 1]
+
 
 
 

@@ -34,7 +34,6 @@ def render_all():
 			visible = is_visible((x, y))
 			if not visible or gvar.admin.light_all:
 				if map[x][y].explored or gvar.admin.light_all:
-					print libtcod.console_get_default_background(gvar.con)
 					libtcod.console_put_char_ex(gvar.con, x, y, map[x][y].char, map[x][y].color * 0.2, libtcod.BKGND_NONE)
 			else:
 				libtcod.console_put_char_ex(gvar.con, x, y, map[x][y].char, map[x][y].color * fov_distance_coef((x, y)), libtcod.BKGND_NONE)

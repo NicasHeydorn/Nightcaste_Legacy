@@ -188,7 +188,7 @@ def is_visible((x, y)):
 
 class PriorityQueue:
     """ |  Priority Queue using Heaps
-            |  for A*-Search
+        |  for A*-Search
     """
 
     def __init__(self):
@@ -225,7 +225,7 @@ def heuristic(a, b):
 
 def a_star_search(map, start, goal, ignore_ai_blocks=False, ignore_types=[]):
     """ |  A* Search algorithm
-            |  Thanks to Redblobgames, based off:
+            |  Thanks to Redblobgames, based on:
             |  http://www.redblobgames.com/pathfinding/a-star/implementation.html
     """
     frontier = PriorityQueue()
